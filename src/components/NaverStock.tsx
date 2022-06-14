@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useRecoilValue } from 'recoil';
-import { corpNameState } from '../recoil/corpName'
+import { corpNameState } from '../recoil/corpName';
 
 const NaverStock = (): JSX.Element => {
     const corpName = useRecoilValue(corpNameState)
