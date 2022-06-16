@@ -133,47 +133,12 @@ const CorpSearch = (): JSX.Element => {
     const periodMenuClick = (e: React.MouseEvent<HTMLLIElement>) => {
         e.preventDefault();
         let text = (e.currentTarget as Element).textContent;
+        setPeriodMenu(text === '1개월' ? 'oneMonth' : text === '6개월' ? 'sixMonth' : text === '1년' ? 'oneYear' : text === '2년' ? 'twoYear' : '')
         setPeriod({
             ...period,
+            startDate: text === '1개월' ? oneMonthAgo(new Date()) : text === '6개월' ? sixMonthAgo(new Date()) : text === '1년' ? oneYearAgo(new Date()) : text === '2년' ? twoYearAgo(new Date()) : oneMonthAgo(new Date()),
             endDate: new Date()
         })
-        switch (text) {
-            case '1개월':
-                setPeriodMenu('oneMonth');
-                setPeriod({
-                    ...period,
-                    startDate: oneMonthAgo(new Date())
-                })
-                break
-            case '6개월':
-                setPeriodMenu('sixMonth');
-                setPeriod({
-                    ...period,
-                    startDate: sixMonthAgo(new Date())
-                })
-                break
-            case '1년':
-                setPeriodMenu('oneYear');
-                setPeriod({
-                    ...period,
-                    startDate: oneYearAgo(new Date())
-                })
-                break
-            case '2년':
-                setPeriodMenu('twoYear');
-                setPeriod({
-                    ...period,
-                    startDate: twoYearAgo(new Date())
-                })
-                break
-            default:
-                setPeriodMenu('');
-                setPeriod({
-                    ...period,
-                    startDate: oneMonthAgo(new Date())
-                })
-                break
-        }
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
