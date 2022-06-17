@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { dateFormat } from '../utils/Date';
+
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
 import { periodState } from '../recoil/period';
 import { isSearchState } from '../recoil/isSearch';
-import { dateFormat } from '../utils/Date';
 
 const NaverStock = (): JSX.Element => {
     const corpCode = useRecoilValue(corpCodeState);
@@ -18,7 +19,7 @@ const NaverStock = (): JSX.Element => {
                     const startTime = dateFormat(period?.startDate);
                     const endTime = dateFormat(period?.endDate);
                     const { data } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`)
-                    console.log(data)
+                    // console.log(data)
                     setIsSearching(false);
                 } catch (e) {
                     console.log(e)

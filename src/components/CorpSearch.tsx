@@ -4,14 +4,17 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
+import corpCode from '../corpData/corp_code.json';
+import { oneMonthAgo, sixMonthAgo, oneYearAgo, twoYearAgo } from '../utils/Date';
 
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
 import { periodState } from '../recoil/period';
 import { isSearchState } from '../recoil/isSearch';
-import corpCode from '../corpData/corp_code.json';
+import { keywordsState } from '../recoil/keywords';
 
-import { oneMonthAgo, sixMonthAgo, oneYearAgo, twoYearAgo } from '../utils/Date';
+import Keywords from './Keywords';
+
 
 
 const Container = styled.div`
@@ -117,13 +120,13 @@ const CustomDatePicker = styled(DatePicker)`
     padding-left: 5px;
     font-size: 0.9rem;
 `
-
 const CorpSearch = (): JSX.Element => {
-    const [corpName, setCorpName] = useState<string>('');               //종목명 검색
-    const setCorpCode = useSetRecoilState(corpCodeState);               //검색된 종목의 코드 객체
-    const [period, setPeriod] = useRecoilState(periodState);            // 시작일 ~ 종료일
-    const [periodMenu, setPeriodMenu] = useState<string>('oneYear');    // 기간 메뉴 1년전(기본)
-    const [isSearching, setIsSearching] = useRecoilState(isSearchState);
+    const [corpName, setCorpName] = useState<string>('');                // 종목명 검색
+    const setCorpCode = useSetRecoilState(corpCodeState);                // 검색된 종목의 코드 객체
+    const [period, setPeriod] = useRecoilState(periodState);             // 시작일 ~ 종료일
+    const [periodMenu, setPeriodMenu] = useState<string>('oneYear');     // 기간 메뉴 1년전(기본)
+    const [isSearching, setIsSearching] = useRecoilState(isSearchState); // 검색중
+    const [keywords, setKeywords] = useRecoilState(keywordsState);       // 최근 검색 기록
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCorpName(e.target.value.toUpperCase())
@@ -147,6 +150,7 @@ const CorpSearch = (): JSX.Element => {
         }
     }
 
+
     // 종목 검색
     const search = () => {
         if (!corpName) {
@@ -159,8 +163,18 @@ const CorpSearch = (): JSX.Element => {
                 alert('일치하는 종목명이 없습니다.')
                 return;
             }
-            setCorpCode(findedCorp)
+            setCorpCode(findedCorp);
             setIsSearching(true);
+
+            // 최근 검색 기록에 없는 경우
+            if (!keywords.find((keyword) => keyword.text === findedCorp?.corp_name)) {
+                const newKeyword = {
+                    id: Date.now(),
+                    text: findedCorp.corp_name
+                }
+                setKeywords([newKeyword, ...keywords])
+            }
+
         }
     }
 
@@ -215,6 +229,11 @@ const CorpSearch = (): JSX.Element => {
             <div className='noticeType'>
                 <h4>공시유형</h4>
             </div>
+
+            {/* 최근 검색 리스트 */}
+            {keywords.length !== 0 &&
+                <Keywords />
+            }
 
             <div className='bntWrap'>
                 <button id='searchBtn' onClick={search}>검색</button>
