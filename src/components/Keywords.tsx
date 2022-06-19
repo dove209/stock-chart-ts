@@ -3,10 +3,10 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import corpCode from '../corpData/corp_code.json';
 
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useResetRecoilState } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
 import { keywordsState } from '../recoil/keywords';
-
+import { isSearchState } from '../recoil/isSearch';
 import { IoMdClose } from 'react-icons/io';
 
 const KeywordsConatiner = styled.ul`
@@ -30,11 +30,14 @@ const KeywordsConatiner = styled.ul`
     }
     
 `;
+interface IKeyword {
+    setCorpName: (text:string) => void
+}
 
-
-const Keywords = () => {
+const Keywords = (props: IKeyword) => {
     const [keywords, setKeywords] = useRecoilState(keywordsState);       // 최근 검색 리스트
     const setCorpCode = useSetRecoilState(corpCodeState);                // 검색된 종목의 코드 객체
+
 
     useEffect(() => {
         localStorage.setItem('keywords', JSON.stringify(keywords))
@@ -43,6 +46,8 @@ const Keywords = () => {
     const keywordClick = (text: string): void => {
         let findedCorp = corpCode.list.find((item) => item.corp_name === text);
         setCorpCode(findedCorp);
+        props.setCorpName(text)
+
     }
 
     const removeKeyword = (e: React.MouseEvent<SVGElement>, id: number): void => {

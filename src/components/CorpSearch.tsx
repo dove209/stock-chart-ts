@@ -15,8 +15,6 @@ import { keywordsState } from '../recoil/keywords';
 
 import Keywords from './Keywords';
 
-
-
 const Container = styled.div`
     border: 1px solid #999;
     border-radius: 6px;
@@ -232,7 +230,7 @@ const CorpSearch = (): JSX.Element => {
 
             {/* 최근 검색 리스트 */}
             {keywords.length !== 0 &&
-                <Keywords />
+                <Keywords setCorpName={setCorpName}/>
             }
 
             <div className='bntWrap'>
