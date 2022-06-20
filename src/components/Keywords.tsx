@@ -28,13 +28,13 @@ const KeywordsConatiner = styled.ul`
     li + li {
         margin-left: 10px;
     }
-    
 `;
-interface IKeyword {
-    setCorpName: (text:string) => void
+
+type KeywordsProps = {
+    setCorpName: (text: string) => void
 }
 
-const Keywords = (props: IKeyword) => {
+const Keywords = ({ setCorpName }: KeywordsProps) => {
     const [keywords, setKeywords] = useRecoilState(keywordsState);       // 최근 검색 리스트
     const setCorpCode = useSetRecoilState(corpCodeState);                // 검색된 종목의 코드 객체
 
@@ -46,7 +46,7 @@ const Keywords = (props: IKeyword) => {
     const keywordClick = (text: string): void => {
         let findedCorp = corpCode.list.find((item) => item.corp_name === text);
         setCorpCode(findedCorp);
-        props.setCorpName(text)
+        setCorpName(text)
 
     }
 
