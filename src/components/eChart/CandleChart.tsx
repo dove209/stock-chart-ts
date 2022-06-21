@@ -1,21 +1,21 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { calculateMA } from '../../utils/NaverParser';
+import * as echarts from "echarts";
 
+import { calculateMA } from '../../utils/NaverParser';
 import { IStockData } from '../../../types/stockData';
+
 
 type CandleChartProps = {
     stockData: IStockData;
-    zoom: any;
-    setZoom: Function;
 }
 
-const CandleChart = ({ stockData, zoom, setZoom }: CandleChartProps) => {
+const CandleChart = ({ stockData }: CandleChartProps) => {
     const getOption = useCallback(() => {
         const upColor = '#ec0000';
         const downColor = '#0A7DF2';
         return {
-            // animation: true,
+            animation: false,
             legend: {
                 bottom: 10,
                 left: 'center',
@@ -200,20 +200,37 @@ const CandleChart = ({ stockData, zoom, setZoom }: CandleChartProps) => {
             ]
         };
     }, [stockData])
-    let timer: any = null;
 
+    const [lineChart, setLineChart] = useState<any>();
+    useEffect(() => {
+        let linechartDom = document.querySelector('.lineChart') as HTMLElement;
+        setLineChart(echarts.init(linechartDom))
+    }, [])
+
+    // let timer: any = null;
     const onChartZoom = (e: any) => {
-        if (timer !== null) {
-            clearTimeout(timer);
-        }
-        timer = setTimeout(function () {
-            console.log(e.batch[0].start, e.batch[0].end)
-            // setZoom({
-            //     ...zoom,
-            //     start: e.batch[0].start,
-            //     end: e.batch[0].end
-            // })
-        }, 150);
+        // if (timer !== null) {
+        //     clearTimeout(timer);
+        // }
+        // timer = setTimeout(function () {
+        //     // let linechartDom = document.querySelector('.lineChart') as HTMLElement;
+        //     // let lineChart = echarts.init(linechartDom)
+        //     let start = (!e.batch) ? e.start : e.batch[0].start;
+        //     let end = (!e.batch) ? e.end : e.batch[0].end;
+        //     lineChart.dispatchAction({
+        //         type: 'dataZoom',
+        //         start: start,
+        //         end: end
+        //     })
+        // }, 150);
+
+        let start = (!e.batch) ? e.start : e.batch[0].start;
+        let end = (!e.batch) ? e.end : e.batch[0].end;
+        lineChart.dispatchAction({
+            type: 'dataZoom',
+            start: start,
+            end: end
+        })
     }
 
     const onEvents = {
@@ -222,6 +239,7 @@ const CandleChart = ({ stockData, zoom, setZoom }: CandleChartProps) => {
 
     return (
         <ReactECharts
+            className={'candleChart'}
             option={getOption()}
             style={{ height: '500px' }}
             onEvents={onEvents}

@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
+import * as echarts from "echarts";
+
 import { IStockData } from '../../../types/stockData';
-import { time } from 'console';
 
 type LineChartProps = {
     stockData: IStockData
-    zoom: any
-    setZoom: Function
 }
 
-const LineChart = ({ stockData, zoom, setZoom }: LineChartProps) => {
+const LineChart = ({ stockData }: LineChartProps) => {
+
     const getOption = useCallback(() => {
         let base = +new Date(1968, 9, 3);
         let oneDay = 24 * 3600 * 1000;
@@ -24,7 +24,7 @@ const LineChart = ({ stockData, zoom, setZoom }: LineChartProps) => {
         let minPrice = Math.min(...closePrice);
 
         return {
-            animation: true,
+            animation: false,
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -75,10 +75,52 @@ const LineChart = ({ stockData, zoom, setZoom }: LineChartProps) => {
             ]
         };
     }, [stockData])
+
+    // const [candleChart, setCandleChart] = useState<any>();
+
+    // useEffect(() => {
+    //     let cnadlechartDom = document.querySelector('.candleChart') as HTMLElement;
+    //     setCandleChart(echarts.init(cnadlechartDom))
+    // }, [])
+
+    // let timer: any = null;
+
+    // const onChartZoom = (e: any) => {
+    //     if (timer !== null) {
+    //         clearTimeout(timer);
+    //     }
+    //     timer = setTimeout(function () {
+    //         let candlechartDom = document.querySelector('.candleChart') as HTMLElement;
+    //         let candleChart = echarts.init(candlechartDom);
+    //         let start = (!e.batch) ? e.start : e.batch[0].start;
+    //         let end = (!e.batch) ? e.end : e.batch[0].end;
+    //         candleChart.dispatchAction({
+    //             type: 'dataZoom',
+    //             start: start,
+    //             end: end
+    //         })
+    //     }, 150);
+    //     let candlechartDom = document.querySelector('.candleChart') as HTMLElement;
+    //     let candleChart = echarts.init(candlechartDom);
+    //     let start = (!e.batch) ? e.start : e.batch[0].start;
+    //     let end = (!e.batch) ? e.end : e.batch[0].end;
+    //     candleChart.dispatchAction({
+    //         type: 'dataZoom',
+    //         start: start,
+    //         end: end
+    //     })
+    // }
+
+    // const onEvents = {
+    //     'datazoom': onChartZoom
+    // }
+
     return (
         <ReactECharts
+            className={'lineChart'}
             option={getOption()}
             style={{ height: '200px' }}
+        // onEvents={onEvents}
         />
     )
 }

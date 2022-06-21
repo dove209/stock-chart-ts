@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 import { dateFormat } from '../utils/Date';
@@ -20,10 +20,6 @@ const NaverStock = () => {
   const [isSearching, setIsSearching] = useRecoilState(isSearchState)
 
   const [stockData, setStockData] = useState<IStockData>();
-  const [zoom, setZoom] = useState({
-    start: 0,
-    end: 100
-  })
 
   useEffect(() => {
     const getNaverStockData = async () => {
@@ -47,14 +43,13 @@ const NaverStock = () => {
     // console.log(stockData)
   }, [stockData])
 
-
   return (
     <>
       <div>{corpCode?.corp_name} {corpCode?.corp_code} {corpCode?.stock_code}</div>
       {!!stockData &&
         <>
-          <CandleChart stockData={stockData} zoom={zoom} setZoom={setZoom} />
-          <LineChart stockData={stockData} zoom={zoom} setZoom={setZoom} />
+          <CandleChart stockData={stockData} />
+          <LineChart stockData={stockData} />
         </>
       }
 
