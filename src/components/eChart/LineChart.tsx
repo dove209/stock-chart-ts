@@ -76,51 +76,37 @@ const LineChart = ({ stockData }: LineChartProps) => {
         };
     }, [stockData])
 
-    // const [candleChart, setCandleChart] = useState<any>();
-
-    // useEffect(() => {
-    //     let cnadlechartDom = document.querySelector('.candleChart') as HTMLElement;
-    //     setCandleChart(echarts.init(cnadlechartDom))
-    // }, [])
-
     // let timer: any = null;
+    const onChartZoom = (e: any) => {
+        // if (timer !== null) {
+        //     clearTimeout(timer);
+        // }
+        // timer = setTimeout(function () {
+        //  //do something
+        // }, 150);
+        if (e.batch) { //해당 차트에서 Zoom한 경우
+            let cnadlechartDom = document.querySelector('.candleChart') as HTMLElement;
+            let candleChart = echarts.getInstanceByDom(cnadlechartDom) as echarts.ECharts;
+            let { start, end } = e.batch[0];
+            candleChart.dispatchAction({
+                type: 'dataZoom',
+                start: start,
+                end: end
+            })
+        }
 
-    // const onChartZoom = (e: any) => {
-    //     if (timer !== null) {
-    //         clearTimeout(timer);
-    //     }
-    //     timer = setTimeout(function () {
-    //         let candlechartDom = document.querySelector('.candleChart') as HTMLElement;
-    //         let candleChart = echarts.init(candlechartDom);
-    //         let start = (!e.batch) ? e.start : e.batch[0].start;
-    //         let end = (!e.batch) ? e.end : e.batch[0].end;
-    //         candleChart.dispatchAction({
-    //             type: 'dataZoom',
-    //             start: start,
-    //             end: end
-    //         })
-    //     }, 150);
-    //     let candlechartDom = document.querySelector('.candleChart') as HTMLElement;
-    //     let candleChart = echarts.init(candlechartDom);
-    //     let start = (!e.batch) ? e.start : e.batch[0].start;
-    //     let end = (!e.batch) ? e.end : e.batch[0].end;
-    //     candleChart.dispatchAction({
-    //         type: 'dataZoom',
-    //         start: start,
-    //         end: end
-    //     })
-    // }
+    }
 
-    // const onEvents = {
-    //     'datazoom': onChartZoom
-    // }
+    const onEvents = {
+        'datazoom': onChartZoom
+    }
 
     return (
         <ReactECharts
             className={'lineChart'}
             option={getOption()}
             style={{ height: '200px' }}
-        // onEvents={onEvents}
+            onEvents={onEvents}
         />
     )
 }

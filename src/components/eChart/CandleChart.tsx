@@ -201,36 +201,25 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
         };
     }, [stockData])
 
-    const [lineChart, setLineChart] = useState<any>();
-    useEffect(() => {
-        let linechartDom = document.querySelector('.lineChart') as HTMLElement;
-        setLineChart(echarts.init(linechartDom))
-    }, [])
-
     // let timer: any = null;
     const onChartZoom = (e: any) => {
         // if (timer !== null) {
         //     clearTimeout(timer);
         // }
         // timer = setTimeout(function () {
-        //     // let linechartDom = document.querySelector('.lineChart') as HTMLElement;
-        //     // let lineChart = echarts.init(linechartDom)
-        //     let start = (!e.batch) ? e.start : e.batch[0].start;
-        //     let end = (!e.batch) ? e.end : e.batch[0].end;
-        //     lineChart.dispatchAction({
-        //         type: 'dataZoom',
-        //         start: start,
-        //         end: end
-        //     })
+        //  //do something
         // }, 150);
+        if (e.batch) { //해당 차트에서 Zoom한 경우
+            let linechartDom = document.querySelector('.lineChart') as HTMLElement;
+            let lineChart = echarts.getInstanceByDom(linechartDom) as echarts.ECharts;
+            let { start, end } = e.batch[0];
+            lineChart.dispatchAction({
+                type: 'dataZoom',
+                start: start,
+                end: end
+            })
+        }
 
-        let start = (!e.batch) ? e.start : e.batch[0].start;
-        let end = (!e.batch) ? e.end : e.batch[0].end;
-        lineChart.dispatchAction({
-            type: 'dataZoom',
-            start: start,
-            end: end
-        })
     }
 
     const onEvents = {
