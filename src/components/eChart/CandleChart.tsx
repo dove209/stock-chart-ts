@@ -44,11 +44,11 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                 dimension: 2,
                 pieces: [
                     {
-                        value: 1,
+                        value: -1,
                         color: downColor
                     },
                     {
-                        value: -1,
+                        value: 1,
                         color: upColor
                     }
                 ]

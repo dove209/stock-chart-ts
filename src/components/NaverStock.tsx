@@ -27,10 +27,12 @@ const NaverStock = () => {
         try {
           const startTime = dateFormat(period?.startDate);
           const endTime = dateFormat(period?.endDate);
-          const { data } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`)
-          const rawData = getStockDate(data);
-          setStockData(splitData(rawData))
-          setIsSearching(false);
+          const { data: priceData } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`)
+          const { data: { status, list: dartData } } = await axios.get(`dartAPI/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`);
+          const rawData = getStockDate(priceData);
+          setStockData(splitData(rawData, dartData))
+          setIsSearching(false);      
+
         } catch (e) {
           console.log(e)
         }
@@ -40,7 +42,7 @@ const NaverStock = () => {
   }, [isSearching])
 
   useEffect(() => {
-    // console.log(stockData)
+    console.log(stockData)
   }, [stockData])
 
   return (

@@ -11,18 +11,9 @@ type LineChartProps = {
 const LineChart = ({ stockData }: LineChartProps) => {
 
     const getOption = useCallback(() => {
-        let base = +new Date(1968, 9, 3);
-        let oneDay = 24 * 3600 * 1000;
-        let date = [];
-        let data = [Math.random() * 300];
-        for (let i = 1; i < 20000; i++) {
-            var now = new Date((base += oneDay));
-            date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
-            data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
-        }
         let closePrice = stockData?.values.map((item) => item[1]);
         let minPrice = Math.min(...closePrice);
-
+        
         return {
             animation: false,
             tooltip: {
@@ -35,7 +26,20 @@ const LineChart = ({ stockData }: LineChartProps) => {
                 padding: 10,
                 textStyle: {
                     color: '#000'
-                }
+                },
+                formatter: function (params:any) {
+                    let idx = params[0].dataIndex;
+                    if (stockData?.cvbdIsDecsn[idx]) {
+                        return `
+                            ${stockData?.cvbdIsDecsn[idx]?.bd_tm}회차 [${stockData?.cvbdIsDecsn[idx]?.bd_knd}]<br>
+                            총액 : ${stockData?.cvbdIsDecsn[idx]?.bd_fta}원<br>
+                            전환가액 : ${stockData?.cvbdIsDecsn[idx]?.cv_prc}원<br>
+                            최소전환가액 : ${stockData?.cvbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원<br>
+                        `;
+                    } else {
+                        return `종가 : <b>${closePrice[idx]}원</b>`;
+                    }
+                  }
             },
             grid: [
                 {
@@ -66,11 +70,22 @@ const LineChart = ({ stockData }: LineChartProps) => {
                 {
                     name: '종가',
                     type: 'line',
-                    symbol: 'none',
                     itemStyle: {
                         color: 'rgb(255, 70, 131)'
                     },
-                    data: closePrice
+                    data: closePrice,
+                    label: {
+                        show: true,
+                        position: 'top',
+                        color: 'rgb(255, 70, 131)',
+                        formatter: function(d: any) {
+                            if(stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm) {
+                                return `${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차`
+                            } else {
+                                return ''
+                            }
+                        }
+                    }
                 }
             ]
         };
@@ -111,4 +126,4 @@ const LineChart = ({ stockData }: LineChartProps) => {
     )
 }
 
-export default LineChart
+export default React.memo(LineChart)
