@@ -3,10 +3,9 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import corpCode from '../corpData/corp_code.json';
 
-import { useSetRecoilState, useRecoilState, useResetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
 import { keywordsState } from '../recoil/keywords';
-import { isSearchState } from '../recoil/isSearch';
 import { IoMdClose } from 'react-icons/io';
 
 const KeywordsConatiner = styled.ul`
