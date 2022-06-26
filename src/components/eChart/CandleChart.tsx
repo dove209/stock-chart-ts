@@ -17,7 +17,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
         return {
             animation: false,
             legend: {
-                bottom: 10,
+                top: 10,
                 left: 'center',
                 data: ['5일선', '10일선', '20일선', '60일선', '120일선']
             },
@@ -63,8 +63,8 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                 {
                     left: '10%',
                     right: '8%',
-                    top: '65%',
-                    height: '25%'
+                    bottom: '4%',
+                    height: '30%'
                 }
             ],
             xAxis: [

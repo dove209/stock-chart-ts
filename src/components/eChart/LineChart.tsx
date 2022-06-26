@@ -9,11 +9,10 @@ type LineChartProps = {
 }
 
 const LineChart = ({ stockData }: LineChartProps) => {
-
     const getOption = useCallback(() => {
         let closePrice = stockData?.values.map((item) => item[1]);
         let minPrice = Math.min(...closePrice);
-        
+
         return {
             animation: false,
             tooltip: {
@@ -46,7 +45,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                     left: '10%',
                     right: '8%',
                     top: '10%',
-                    height: '50%'
+                    height: '75%'
                 }
             ],
             xAxis: {
@@ -77,13 +76,15 @@ const LineChart = ({ stockData }: LineChartProps) => {
                     label: {
                         show: true,
                         position: 'top',
+                        distance: 5,
                         color: 'rgb(255, 70, 131)',
                         formatter: function(d: any) {
-                            if(stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm) {
-                                return `${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차`
-                            } else {
-                                return ''
-                            }
+                                if(stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm) {
+                                    return `${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차`
+                                } else {
+                                    return ''
+                                }
+
                         }
                     }
                 }
@@ -109,18 +110,18 @@ const LineChart = ({ stockData }: LineChartProps) => {
                 end: end
             })
         }
-
+        
     }
 
     const onEvents = {
-        'datazoom': onChartZoom
+        'datazoom': onChartZoom,
     }
 
     return (
         <ReactECharts
             className={'lineChart'}
             option={getOption()}
-            style={{ height: '200px' }}
+            style={{ height: '250px' }}
             onEvents={onEvents}
         />
     )

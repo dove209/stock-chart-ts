@@ -32,7 +32,6 @@ const NaverStock = () => {
           const rawData = getStockDate(priceData);
           setStockData(splitData(rawData, dartData))
           setIsSearching(false);      
-
         } catch (e) {
           console.log(e)
         }
@@ -47,7 +46,6 @@ const NaverStock = () => {
 
   return (
     <>
-      <div>{corpCode?.corp_name} {corpCode?.corp_code} {corpCode?.stock_code}</div>
       {!!stockData &&
         <>
           <CandleChart stockData={stockData} />
