@@ -36,7 +36,11 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             최소전환가액 : ${stockData?.cvbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원<br>
                         `;
                     } else {
-                        return `종가 : <b>${closePrice[idx]}원</b>`;
+                        return `
+                            <div class='tooltip'>
+                                <p>종가<b>${closePrice[idx].toLocaleString()}원</b></p>
+                            </div>
+                        `;
                     }
                   }
             },

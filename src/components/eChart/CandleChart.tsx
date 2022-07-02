@@ -31,7 +31,30 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                 padding: 10,
                 textStyle: {
                     color: '#000'
-                }
+                },
+                formatter: function (params:any) {
+                    console.log(params)
+                    if(params[0].componentSubType === 'candlestick') {
+                        return `
+                        <div class='tooltip' data-color=${params[0].value[1] < params[0].value[2] ? `upColor` : `downColor`}>
+                            <div class='header'>${params[0].name}</div>
+                            <p><span></span>시가<b>${params[0].value[1].toLocaleString()}원</b></p>
+                            <p><span></span>종가<b>${params[0].value[2].toLocaleString()}원</b></p>
+                            <p><span></span>고가<b>${params[0].value[3].toLocaleString()}원</b></p>
+                            <p><span></span>저가<b>${params[0].value[4].toLocaleString()}원</b></p>
+                        </div>
+          
+                    `
+                    }
+                     else if (params[0].componentSubType === 'bar') {
+                        return `
+                        <div class='tooltip' data-color=${params[0].value[1] < params[0].value[2] ? `upColor` : `downColor`}>
+                            <div class='header'>${params[0].name}</div>
+                            <p><span></span>거래량<b>${params[0].value[1].toLocaleString()}</b></p>
+                        </div>
+                    `   
+                    }
+                  }
             },
             axisPointer: {
                 label: {
