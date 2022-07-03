@@ -3,4 +3,5 @@ export interface IStockData {
     values: number[][]
     volumes: number[][]
     cvbdIsDecsn: any[]
+    piicDecsn: any[]
 }

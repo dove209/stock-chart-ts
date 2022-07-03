@@ -24,7 +24,6 @@ code {
 .tooltip > .header {
   margin-bottom: 10px;
 }
-
 .tooltip > p {
   display: flex;
   align-items: center;
@@ -41,8 +40,20 @@ code {
 .tooltip[data-color='downColor'] > p > span {
   background-color: #0A7DF2;
 }
-
+.tooltip > p > .price { 
+  background-color: rgb(255, 70, 131);
+}
+.tooltip > p > .foreign { 
+  background-color: rgba(0, 0, 0, 0.2);
+}
 .tooltip > p > b {
   font-weight: 600;
   margin-left: 14px;
 }
+
+
+.dart_tooltip > p > b {
+  font-weight: 600;
+  margin-left: 4px;
+}
+

@@ -224,9 +224,6 @@ const CorpSearch = (): JSX.Element => {
                     <li className={periodMenu === 'twoYear' ? 'active' : undefined} onClick={periodMenuClick}>2년</li>
                 </ul>
             </div>
-            <div className='noticeType'>
-                <h4>공시유형</h4>
-            </div>
 
             {/* 최근 검색 리스트 */}
             {keywords.length !== 0 &&

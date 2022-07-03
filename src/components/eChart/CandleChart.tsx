@@ -33,7 +33,6 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                     color: '#000'
                 },
                 formatter: function (params:any) {
-                    console.log(params)
                     if(params[0].componentSubType === 'candlestick') {
                         return `
                         <div class='tooltip' data-color=${params[0].value[1] < params[0].value[2] ? `upColor` : `downColor`}>
@@ -43,7 +42,6 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                             <p><span></span>고가<b>${params[0].value[3].toLocaleString()}원</b></p>
                             <p><span></span>저가<b>${params[0].value[4].toLocaleString()}원</b></p>
                         </div>
-          
                     `
                     }
                      else if (params[0].componentSubType === 'bar') {
@@ -120,7 +118,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                 {
                     scale: true,
                     splitArea: {
-                        show: true
+                        show: false
                     }
                 },
                 {
@@ -131,6 +129,14 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                     axisLine: { show: false },
                     axisTick: { show: false },
                     splitLine: { show: false }
+                },
+                {
+                    type: 'value',
+                    name: '외인 소진율',
+                    scale: true,
+                    splitLine: {
+                        show: false,
+                    },
                 }
             ],
             dataZoom: [

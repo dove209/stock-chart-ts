@@ -27,10 +27,11 @@ const NaverStock = () => {
         try {
           const startTime = dateFormat(period?.startDate);
           const endTime = dateFormat(period?.endDate);
-          const { data: priceData } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`)
-          const { data: { status, list: dartData } } = await axios.get(`dartAPI/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`);
+          const { data: priceData } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`); //naver 주식 데이터
+          const { data: { list: cdbdData } } = await axios.get(`dartAPI/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`); //opendart 전환사채 API
+          const { data: { list: piicData } } = await axios.get(`dartAPI/piicDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`); //opendart 유상증자 API
           const rawData = getStockDate(priceData);
-          setStockData(splitData(rawData, dartData))
+          setStockData(splitData(rawData, cdbdData, piicData))
           setIsSearching(false);      
         } catch (e) {
           console.log(e)
