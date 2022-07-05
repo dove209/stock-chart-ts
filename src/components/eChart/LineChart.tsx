@@ -11,7 +11,7 @@ type LineChartProps = {
 const LineChart = ({ stockData }: LineChartProps) => {
     const getOption = useCallback(() => {
         let closePrice = stockData?.values.map((item) => item[1]);
-        let foreignRatio  = stockData?.values.map((item) => item[5]);
+        let foreignRatio = stockData?.values.map((item) => item[5]);
         let minPrice = Math.min(...closePrice);
 
         return {
@@ -27,7 +27,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                 textStyle: {
                     color: '#000'
                 },
-                formatter: function (params:any) {
+                formatter: function (params: any) {
                     let idx = params[0].dataIndex;
                     if (stockData?.cvbdIsDecsn[idx]) {
                         return `
@@ -45,7 +45,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>전환청구기간: <b>${stockData?.cvbdIsDecsn[idx]?.cvrqpd_bgd} ~ ${stockData?.cvbdIsDecsn[idx]?.cvrqpd_edd}</b></p>
                         </div>
                         `;
-                    } else if(stockData?.piicDecsn[idx]) {
+                    } else if (stockData?.piicDecsn[idx]) {
                         return `
                         <div class='dart_tooltip'>
                             <div class='header'>${params[0].name}</div>
@@ -57,7 +57,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>타법인 증권 취득 자금:<b>${stockData?.piicDecsn[idx]?.fdpp_ocsa}원</b></p>
                             <p>기타자금:<b>${stockData?.piicDecsn[idx]?.fdpp_etc}원</b></p>
                         </div>
-                        `  
+                        `
                     } else {
                         return `
                             <div class='tooltip'>
@@ -67,7 +67,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             </div>
                         `;
                     }
-                  }
+                }
             },
             grid: [
                 {
@@ -117,18 +117,21 @@ const LineChart = ({ stockData }: LineChartProps) => {
                     label: {
                         show: true,
                         position: 'top',
-                        distance: 5,
+                        distance: 0,
                         color: '#0F1291',
                         fontWeight: 'bold',
-                        formatter: function(d: any) {
-                                let text = ''
-                                if(stockData?.cvbdIsDecsn[d.dataIndex]) {
-                                    text += `CB(${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차)`
-                                } 
-                                if(stockData?.piicDecsn[d.dataIndex]) {
-                                    text += `\n유증`
-                                }
-                                return text;
+                        formatter: function (d: any) {
+                            let labelArr = [];
+                            if (stockData?.cvbdIsDecsn[d.dataIndex]) {
+                                labelArr.push(`CB(${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차)`);
+                            }
+                            if (stockData?.piicDecsn[d.dataIndex]) {
+                                labelArr.push(`유증`);
+                            }
+                            if (labelArr.length !== 0) {
+                                labelArr.push('↓')
+                            }
+                            return labelArr.join('\n');
                         }
                     },
                 },
@@ -141,8 +144,8 @@ const LineChart = ({ stockData }: LineChartProps) => {
                     itemStyle: {
                         color: 'rgba(0, 0, 0, 0.2)'
                     },
-            
-                  }
+
+                }
             ]
         };
     }, [stockData])
@@ -167,7 +170,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
         }
     }
 
-    const onClick = (e:any) => {
+    const onClick = (e: any) => {
         console.log(e)
     }
 
@@ -180,7 +183,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
         <ReactECharts
             className={'lineChart'}
             option={getOption()}
-            style={{ height: '250px', marginBottom:'100px' }}
+            style={{ height: '250px', marginBottom: '100px' }}
             onEvents={onEvents}
         />
     )

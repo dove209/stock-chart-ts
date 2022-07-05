@@ -7,7 +7,27 @@ export const getStockDate = (data) => {
   return result;
 };
 
-export const splitData = (rawData, cdbdData, piicData) => {
+// 이동 평균선 계산
+export const calculateMA = (dayCount, data) => {
+  var result = [];
+  for (var i = 0, len = data?.values.length; i < len; i++) {
+    if (i < dayCount) {
+      result.push("-");
+      continue;
+    }
+    var sum = 0;
+    for (var j = 0; j < dayCount; j++) {
+      sum += data?.values[i - j][1];
+    }
+    result.push(+(sum / dayCount).toFixed(0));
+  }
+  return result;
+};
+
+
+
+// 차트, 공시 정보가 포함된 메인 데이터
+export const MainData = (rawData, cdbdData, piicData) => {
   let categoryData = [];
   let values = [];
   let volumes = [];
@@ -94,18 +114,4 @@ export const splitData = (rawData, cdbdData, piicData) => {
   };
 };
 
-export const calculateMA = (dayCount, data) => {
-  var result = [];
-  for (var i = 0, len = data?.values.length; i < len; i++) {
-    if (i < dayCount) {
-      result.push("-");
-      continue;
-    }
-    var sum = 0;
-    for (var j = 0; j < dayCount; j++) {
-      sum += data?.values[i - j][1];
-    }
-    result.push(+(sum / dayCount).toFixed(0));
-  }
-  return result;
-};
+

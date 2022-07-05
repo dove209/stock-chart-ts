@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from "echarts";
 
-import { calculateMA } from '../../utils/NaverParser';
+import { calculateMA } from '../../utils/MainData';
 import { IStockData } from '../../../types/stockData';
 
 
@@ -32,8 +32,8 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                 textStyle: {
                     color: '#000'
                 },
-                formatter: function (params:any) {
-                    if(params[0].componentSubType === 'candlestick') {
+                formatter: function (params: any) {
+                    if (params[0].componentSubType === 'candlestick') {
                         return `
                         <div class='tooltip' data-color=${params[0].value[1] < params[0].value[2] ? `upColor` : `downColor`}>
                             <div class='header'>${params[0].name}</div>
@@ -44,15 +44,15 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                         </div>
                     `
                     }
-                     else if (params[0].componentSubType === 'bar') {
+                    else if (params[0].componentSubType === 'bar') {
                         return `
                         <div class='tooltip' data-color=${params[0].value[1] < params[0].value[2] ? `upColor` : `downColor`}>
                             <div class='header'>${params[0].name}</div>
                             <p><span></span>거래량<b>${params[0].value[1].toLocaleString()}</b></p>
                         </div>
-                    `   
+                    `
                     }
-                  }
+                }
             },
             axisPointer: {
                 label: {

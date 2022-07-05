@@ -13,7 +13,9 @@ import { periodState } from '../recoil/period';
 import { isSearchState } from '../recoil/isSearch';
 import { keywordsState } from '../recoil/keywords';
 
+import AutoComplete from './AutoComplete';
 import Keywords from './Keywords';
+
 
 const Container = styled.div`
     border: 1px solid #999;
@@ -68,17 +70,6 @@ const Container = styled.div`
             height: 100%;
         }  
     }
-
-    // 종목명 검색
-    .corpName {
-        & > input {
-            width: 200px;
-            height: 100%;
-            border: 1px solid #e1e1e1;
-            border-radius: 5px;
-            padding-left: 5px;
-        }
-    }
     // 기간 선택
     .period {
         ul {
@@ -117,6 +108,8 @@ const CustomDatePicker = styled(DatePicker)`
     border-radius: 5px;
     padding-left: 5px;
     font-size: 0.9rem;
+    outline: none;
+
 `
 const CorpSearch = (): JSX.Element => {
     const [corpName, setCorpName] = useState<string>('');                // 종목명 검색
@@ -125,10 +118,6 @@ const CorpSearch = (): JSX.Element => {
     const [periodMenu, setPeriodMenu] = useState<string>('oneYear');     // 기간 메뉴 1년전(기본)
     const [isSearching, setIsSearching] = useRecoilState(isSearchState); // 검색중
     const [keywords, setKeywords] = useRecoilState(keywordsState);       // 최근 검색 기록
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCorpName(e.target.value.toUpperCase())
-    }
 
     // 기간 메뉴 선택
     const periodMenuClick = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -141,13 +130,6 @@ const CorpSearch = (): JSX.Element => {
             endDate: new Date()
         })
     }
-
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            search()
-        }
-    }
-
 
     // 종목 검색
     const search = () => {
@@ -192,14 +174,7 @@ const CorpSearch = (): JSX.Element => {
         <Container>
             <div className='corpName'>
                 <h4>회사이름</h4>
-                <input
-                    autoFocus
-                    type={'text'}
-                    value={corpName}
-                    onChange={onChange}
-                    placeholder={'종목명 입력'}
-                    onKeyDown={handleKeyPress}
-                />
+                <AutoComplete value={corpName} setCorpName={setCorpName} />
             </div>
             <div className='period'>
                 <h4>기간</h4>
@@ -227,7 +202,7 @@ const CorpSearch = (): JSX.Element => {
 
             {/* 최근 검색 리스트 */}
             {keywords.length !== 0 &&
-                <Keywords setCorpName={setCorpName}/>
+                <Keywords setCorpName={setCorpName} />
             }
 
             <div className='bntWrap'>

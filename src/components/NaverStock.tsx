@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 import { dateFormat } from '../utils/Date';
-import { getStockDate, splitData } from '../utils/NaverParser';
+import { getStockDate, MainData } from '../utils/MainData';
 
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
@@ -31,8 +31,8 @@ const NaverStock = () => {
           const { data: { list: cdbdData } } = await axios.get(`dartAPI/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`); //opendart 전환사채 API
           const { data: { list: piicData } } = await axios.get(`dartAPI/piicDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`); //opendart 유상증자 API
           const rawData = getStockDate(priceData);
-          setStockData(splitData(rawData, cdbdData, piicData))
-          setIsSearching(false);      
+          setStockData(MainData(rawData, cdbdData, piicData))
+          setIsSearching(false);
         } catch (e) {
           console.log(e)
         }
