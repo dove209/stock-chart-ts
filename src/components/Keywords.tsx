@@ -19,6 +19,7 @@ const KeywordsConatiner = styled.ul`
         align-items: center;
         border-radius: 5px;
         border: 1px solid #e1e1e1;
+        font-size: 0.9rem;
         cursor: pointer;
         svg {
             margin-left: 5px;

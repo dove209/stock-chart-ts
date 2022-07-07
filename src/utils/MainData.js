@@ -27,17 +27,14 @@ export const calculateMA = (dayCount, data) => {
 
 
 // 차트, 공시 정보가 포함된 메인 데이터
-export const MainData = (rawData, cdbdData, piicData) => {
+export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
   let categoryData = [];
   let values = [];
   let volumes = [];
 
   for (let i = 0; i < rawData.length; i++) {
     let date = rawData[i][0];
-    let dateFormat = `${date.substr(0, 4)}-${date.substr(4, 2)}-${date.substr(
-      6,
-      2
-    )}`;
+    let dateFormat = `${date.substr(0, 4)}-${date.substr(4, 2)}-${date.substr(6,2)}`;
     categoryData.push(dateFormat); //거래일
     //주가정보
     // NaverAPI [날짜 - 시가 - 고가 - 저가 - 종가 - 거래량 - 외국인소진율] 에서
@@ -59,10 +56,7 @@ export const MainData = (rawData, cdbdData, piicData) => {
   if (!!cdbdData) {
     cdbdData.forEach((data) => {
       let bddd = data.bddd.replace(/(\s*)/g, "");
-      let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(
-        8,
-        2
-      )}`;
+      let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
       let findIdx = categoryData.indexOf(dateFormat);
       let cvObj = {
         bd_tm: data.bd_tm, //회차
@@ -87,10 +81,7 @@ export const MainData = (rawData, cdbdData, piicData) => {
   let piicDecsn = new Array(categoryData.length).fill(null);
   if (!!piicData) {
     piicData.forEach((data) => {
-      let dateFormat = `${data.rcept_no.substr(0, 4)}-${data.rcept_no.substr(
-        4,
-        2
-      )}-${data.rcept_no.substr(6, 2)}`;
+      let dateFormat = `${data.rcept_no.substr(0, 4)}-${data.rcept_no.substr(4,2)}-${data.rcept_no.substr(6, 2)}`;
       let findIdx = categoryData.indexOf(dateFormat);
       let piilcObj = {
         fdpp_fclt: data.fdpp_fclt, //시설자금
@@ -105,12 +96,34 @@ export const MainData = (rawData, cdbdData, piicData) => {
     });
   }
 
+  //다트 전환가액조정 공시
+  let adjustCB = new Array(categoryData.length).fill(null);
+  if (!!adjustCbData) {
+    const regExp = /[^0-9]/g;
+    adjustCbData.forEach((data) => {
+      if(data.report_nm.includes('전환가액의조정')) {
+        let dateFormat = `${data.rcept_dt.substr(0, 4)}-${data.rcept_dt.substr(4,2)}-${data.rcept_no.substr(6, 2)}`;
+        let findIdx = categoryData.indexOf(dateFormat);
+        let adjCbObj = {
+          date: dateFormat,
+          report_nm: data.report_nm, //리포트 이름
+          rount: data.report_nm.replace(regExp, '') //전환가액전환 회사
+        };
+        adjustCB[findIdx] = adjCbObj;
+      }
+    });
+  }
+
+
+
+  
   return {
     categoryData: categoryData,
     values: values,
     volumes: volumes,
     cvbdIsDecsn: cvbdIsDecsn,
-    piicDecsn: piicDecsn
+    piicDecsn: piicDecsn,
+    adjustCB: adjustCB
   };
 };
 

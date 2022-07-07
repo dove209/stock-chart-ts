@@ -13,7 +13,7 @@ import { IStockData } from '../../types/stockData';
 import CandleChart from './eChart/CandleChart';
 import LineChart from './eChart/LineChart';
 
-const NaverStock = () => {
+const StockChart = () => {
 
   const corpCode = useRecoilValue(corpCodeState);
   const period = useRecoilValue(periodState);
@@ -30,8 +30,9 @@ const NaverStock = () => {
           const { data: priceData } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`); //naver 주식 데이터
           const { data: { list: cdbdData } } = await axios.get(`dartAPI/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`); //opendart 전환사채 API
           const { data: { list: piicData } } = await axios.get(`dartAPI/piicDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`); //opendart 유상증자 API
+          const { data: { list: adjustCbData } } = await axios.get(`dartAPI/list.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}&page_count=100&pblntf_ty=I`); //opendart 전환가액 조정 공시(I)
           const rawData = getStockDate(priceData);
-          setStockData(MainData(rawData, cdbdData, piicData))
+          setStockData(MainData(rawData, cdbdData, piicData, adjustCbData))
           setIsSearching(false);
         } catch (e) {
           console.log(e)
@@ -53,10 +54,9 @@ const NaverStock = () => {
           <LineChart stockData={stockData} />
         </>
       }
-
     </>
 
   )
 }
 
-export default NaverStock
+export default StockChart

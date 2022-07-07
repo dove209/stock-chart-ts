@@ -3,7 +3,7 @@ import { Reset } from 'styled-reset';
 import './App.css';
 
 import CorpSearch from './components/CorpSearch';
-import NaverStock from './components/NaverStock';
+import StockChart from './components/StockChart';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <div className="App">
         <div className='Container'>
           <CorpSearch />
-          <NaverStock />
+          <StockChart />
         </div>
       </div>
     </>

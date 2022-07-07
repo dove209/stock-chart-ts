@@ -58,6 +58,13 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>기타자금:<b>${stockData?.piicDecsn[idx]?.fdpp_etc}원</b></p>
                         </div>
                         `
+                    } else if (stockData?.adjustCB[idx]) {
+                        return `
+                        <div class='dart_tooltip'>
+                            <div class='header'>${params[0].name}</div>
+                            <p>보고서명:<b>${stockData?.adjustCB[idx]?.report_nm}</b></p>
+                        </div>
+                        `
                     } else {
                         return `
                             <div class='tooltip'>
@@ -128,6 +135,9 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             if (stockData?.piicDecsn[d.dataIndex]) {
                                 labelArr.push(`유증`);
                             }
+                            if (stockData?.adjustCB[d.dataIndex]) {
+                                labelArr.push(`전환가조정\n(${stockData?.adjustCB[d.dataIndex].rount}회차)`);
+                            }
                             if (labelArr.length !== 0) {
                                 labelArr.push('↓')
                             }
@@ -183,7 +193,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
         <ReactECharts
             className={'lineChart'}
             option={getOption()}
-            style={{ height: '250px', marginBottom: '100px' }}
+            style={{ height: '250px', marginBottom: 100, marginTop: 20 }}
             onEvents={onEvents}
         />
     )

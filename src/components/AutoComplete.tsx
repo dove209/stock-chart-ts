@@ -83,7 +83,7 @@ const AutoComplete = ({ value, setCorpName }: AutoCompleteProps) => {
     const onBlue = () => {
         setDropDwonShow(false)
         if (dropDownItemIndex !== -1) {
-            setCorpName(dropDownList[dropDownItemIndex].corp_name)
+            setCorpName(dropDownList[dropDownItemIndex]?.corp_name)
         }
     }
 

@@ -84,8 +84,8 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                 {
                     left: '10%',
                     right: '8%',
-                    bottom: '4%',
-                    height: '30%'
+                    bottom: '0%',
+                    height: '28%'
                 }
             ],
             xAxis: [
@@ -122,17 +122,18 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
                     }
                 },
                 {
+                    name: '거래량',
                     scale: true,
                     gridIndex: 1,
                     splitNumber: 2,
                     axisLabel: { show: false },
                     axisLine: { show: false },
                     axisTick: { show: false },
-                    splitLine: { show: false }
+                    splitLine: { show: false },
                 },
                 {
                     type: 'value',
-                    name: '외인 소진율',
+                    name: '외인지분',
                     scale: true,
                     splitLine: {
                         show: false,
