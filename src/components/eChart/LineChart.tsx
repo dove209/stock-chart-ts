@@ -130,13 +130,13 @@ const LineChart = ({ stockData }: LineChartProps) => {
                         formatter: function (d: any) {
                             let labelArr = [];
                             if (stockData?.cvbdIsDecsn[d.dataIndex]) {
-                                labelArr.push(`CB(${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차)`);
+                                labelArr.push(`CB발행\n(${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차)`);
                             }
                             if (stockData?.piicDecsn[d.dataIndex]) {
                                 labelArr.push(`유증`);
                             }
                             if (stockData?.adjustCB[d.dataIndex]) {
-                                labelArr.push(`전환가조정\n(${stockData?.adjustCB[d.dataIndex].rount}회차)`);
+                                labelArr.push(`CB조정\n(${stockData?.adjustCB[d.dataIndex].rount}회차)`);
                             }
                             if (labelArr.length !== 0) {
                                 labelArr.push('↓')
@@ -181,7 +181,22 @@ const LineChart = ({ stockData }: LineChartProps) => {
     }
 
     const onClick = (e: any) => {
-        console.log(e)
+        // 전환사채 발행 결정
+        if (stockData.cvbdIsDecsn[e.dataIndex]) {
+            let rceptNo = stockData?.cvbdIsDecsn[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '_blank', 'width=1300, height=1000, scrollbars=yes')
+        }
+        // 유상증자 발행 결정
+        if (stockData.piicDecsn[e.dataIndex]) {
+            let rceptNo = stockData?.piicDecsn[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '_blank', 'width=1300, height=1000, scrollbars=yes')
+        }
+
+        // 전환사채가의조정
+        if (stockData.adjustCB[e.dataIndex]) {
+            let rceptNo = stockData?.adjustCB[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '_blank', 'width=1300, height=1000, scrollbars=yes')
+        }
     }
 
     const onEvents = {
@@ -193,7 +208,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
         <ReactECharts
             className={'lineChart'}
             option={getOption()}
-            style={{ height: '250px', marginBottom: 100, marginTop: 20 }}
+            style={{ height: '350px', marginBottom: 100, marginTop: 20 }}
             onEvents={onEvents}
         />
     )

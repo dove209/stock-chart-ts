@@ -59,6 +59,7 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
       let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
       let findIdx = categoryData.indexOf(dateFormat);
       let cvObj = {
+        rcept_no:data.rcept_no,
         bd_tm: data.bd_tm, //회차
         bd_knd: data.bd_knd, //종류
         bd_fta: data.bd_fta, //총액
@@ -84,6 +85,7 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
       let dateFormat = `${data.rcept_no.substr(0, 4)}-${data.rcept_no.substr(4,2)}-${data.rcept_no.substr(6, 2)}`;
       let findIdx = categoryData.indexOf(dateFormat);
       let piilcObj = {
+        rcept_no:data.rcept_no,
         fdpp_fclt: data.fdpp_fclt, //시설자금
         fdpp_bsninh: data.fdpp_bsninh, //영업양수자금
         fdpp_op: data.fdpp_op, //운영자금
@@ -105,7 +107,7 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
         let dateFormat = `${data.rcept_dt.substr(0, 4)}-${data.rcept_dt.substr(4,2)}-${data.rcept_no.substr(6, 2)}`;
         let findIdx = categoryData.indexOf(dateFormat);
         let adjCbObj = {
-          date: dateFormat,
+          rcept_no:data.rcept_no,
           report_nm: data.report_nm, //리포트 이름
           rount: data.report_nm.replace(regExp, '') //전환가액전환 회사
         };
@@ -114,9 +116,6 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
     });
   }
 
-
-
-  
   return {
     categoryData: categoryData,
     values: values,
