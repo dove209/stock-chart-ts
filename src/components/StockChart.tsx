@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
