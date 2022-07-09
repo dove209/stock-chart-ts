@@ -11,8 +11,8 @@ import { IoMdClose } from 'react-icons/io';
 const KeywordsConatiner = styled.ul`
     margin-top:8px;
     display: flex;
-    align-items: center;
-    height: 47px;
+    flex-wrap: wrap;
+    max-width: 540px;
     li {
         padding: 5px 8px;
         display: flex;
@@ -24,9 +24,14 @@ const KeywordsConatiner = styled.ul`
         svg {
             margin-left: 5px;
         }
+        &:first-child {
+            margin-right: 10px;
+            margin-top: 10px;
+        }
     }
     li + li {
-        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
     }
 `;
 

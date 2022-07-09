@@ -76,14 +76,14 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
             },
             grid: [
                 {
-                    left: '10%',
-                    right: '8%',
+                    left: '5%',
+                    right: '5%',
                     top: '10%',
                     height: '50%'
                 },
                 {
-                    left: '10%',
-                    right: '8%',
+                    left: '5%',
+                    right: '5%',
                     bottom: '0%',
                     height: '28%'
                 }
@@ -260,7 +260,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
         <ReactECharts
             className={'candleChart'}
             option={getOption()}
-            style={{ height: '500px' }}
+            style={{ height: '60%' }}
             onEvents={onEvents}
         />
     )

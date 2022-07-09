@@ -12,7 +12,9 @@ function App() {
       <div className="App">
         <div className='Container'>
           <CorpSearch />
-          <StockChart />
+          <div className='ChartWrap'>
+            <StockChart />
+          </div>
         </div>
       </div>
     </>

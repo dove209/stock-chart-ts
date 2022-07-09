@@ -27,7 +27,7 @@ export const calculateMA = (dayCount, data) => {
 
 
 // 차트, 공시 정보가 포함된 메인 데이터
-export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
+export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData) => {
   let categoryData = [];
   let values = [];
   let volumes = [];
@@ -51,7 +51,7 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
     volumes.push([i, numberData[5], numberData[1] < numberData[4] ? 1 : -1]); //거래량(1  = up, -1 = down)
   }
 
-  // 다트 전환사채 발행 결정 공시
+  //전환사채(CB) 발행 결정 공시
   let cvbdIsDecsn = new Array(categoryData.length).fill(null);
   if (!!cdbdData) {
     cdbdData.forEach((data) => {
@@ -78,7 +78,34 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
     });
   }
 
-  //다트 유상증자 결정 공시
+    //신주인수권부사채권(BW) 발행 결정 공시
+    let bwbdIsDecsn = new Array(categoryData.length).fill(null);
+    if (!!bwbdData) {
+      bwbdData.forEach((data) => {
+        let bddd = data.bddd.replace(/(\s*)/g, "");
+        let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
+        let findIdx = categoryData.indexOf(dateFormat);
+        let cvObj = {
+          rcept_no:data.rcept_no,
+          bd_tm: data.bd_tm, //회차
+          bd_knd: data.bd_knd, //종류
+          bd_fta: data.bd_fta, //총액
+          fdpp_fclt: data.fdpp_fclt, //시설자금
+          fdpp_bsninh: data.fdpp_bsninh, //영업양수자금
+          fdpp_op: data.fdpp_op, //운영자금
+          fdpp_dtrp: data.fdpp_dtrp, //채무상환자금
+          fdpp_ocsa: data.fdpp_ocsa, //타법인 증권 취득자금
+          fdpp_etc: data.fdpp_etc, //기타자금
+          ex_prc: data.ex_prc, //행사가액
+          act_mktprcfl_cvprc_lwtrsprc: data.act_mktprcfl_cvprc_lwtrsprc, //최소 조정가액
+          expd_bgd: data.expd_bgd, //권리행사기간(시작일)
+          expd_edd: data.expd_edd, //권리행사기간(종료일)
+        };
+        bwbdIsDecsn[findIdx] = cvObj;
+      });
+    }
+
+  //유상증자 결정 공시
   let piicDecsn = new Array(categoryData.length).fill(null);
   if (!!piicData) {
     piicData.forEach((data) => {
@@ -98,7 +125,7 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
     });
   }
 
-  //다트 전환가액조정 공시
+  //전환가액조정 공시
   let adjustCB = new Array(categoryData.length).fill(null);
   if (!!adjustCbData) {
     const regExp = /[^0-9]/g;
@@ -116,13 +143,64 @@ export const MainData = (rawData, cdbdData, piicData, adjustCbData) => {
     });
   }
 
+  //주식등대량보유상황 공시
+  let majorStock = new Array(categoryData.length).fill(null);
+  if (!!majorStockData) {
+    majorStockData.forEach((data) => {
+      let findIdx = categoryData.indexOf(data.rcept_dt);
+      if(findIdx >= 0) {
+        let majorObj = {
+          rcept_no:data.rcept_no,
+          repror: data.repror, //보고자
+          stkrt_irds: data.stkrt_irds, //보유비율 증감
+          report_resn: data.report_resn, //보고사유
+        };
+        majorStock[findIdx] = majorObj;
+      }
+    });
+  }
+
+  // 타법인 주식 및 출자증권 양수 공시
+  let ocsisInh = new Array(categoryData.length).fill(null);
+  if (!!ocsisInhData) {
+    ocsisInhData.forEach((data) => {
+      let bddd = data.bddd.replace(/(\s*)/g, "");
+      let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
+      let findIdx = categoryData.indexOf(dateFormat);
+        let ocsisInhObj = {
+          rcept_no:data.rcept_no,
+          iscmp_cmpnm: data.iscmp_cmpnm, //발행회사
+          inh_pp: data.inh_pp, //양수목적
+        };
+        ocsisInh[findIdx] = ocsisInhObj;
+    });
+  }
+  // 타법인 주식 및 출자증권 양도 공시
+  let ocsisTrf = new Array(categoryData.length).fill(null);
+  if (!!ocsisTrfData) {
+    ocsisTrfData.forEach((data) => {
+      let bddd = data.bddd.replace(/(\s*)/g, "");
+      let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
+      let findIdx = categoryData.indexOf(dateFormat);
+        let ocsisTrfObj = {
+          rcept_no:data.rcept_no,
+          iscmp_cmpnm: data.iscmp_cmpnm, //발행회사
+          trf_pp: data.trf_pp, //양도목적
+        };
+        ocsisTrf[findIdx] = ocsisTrfObj;
+    });
+  }
   return {
     categoryData: categoryData,
     values: values,
     volumes: volumes,
-    cvbdIsDecsn: cvbdIsDecsn,
-    piicDecsn: piicDecsn,
-    adjustCB: adjustCB
+    cvbdIsDecsn: cvbdIsDecsn, //CB발행결정
+    bwbdIsDecsn: bwbdIsDecsn, //BW발행결정
+    piicDecsn: piicDecsn, //유상증자결정
+    adjustCB: adjustCB,   //CB가 조정
+    majorStock: majorStock, //주식등의대량보유상황
+    ocsisInh: ocsisInh, //타법인 주식 증권 양수
+    ocsisTrf: ocsisTrf  //타법인 주식 증권 양도
   };
 };
 

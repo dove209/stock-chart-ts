@@ -18,9 +18,10 @@ import Keywords from './Keywords';
 
 
 const Container = styled.div`
+    width: auto;
     border: 1px solid #999;
     border-radius: 6px;
-    padding: 8px 30px 0px;
+    padding: 8px 16px 0px;
     box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
     & > div {
         display: flex;
