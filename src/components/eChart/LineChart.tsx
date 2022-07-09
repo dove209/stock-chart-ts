@@ -12,8 +12,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
     const getOption = useCallback(() => {
         let closePrice = stockData?.values.map((item) => item[1]);
         let foreignRatio = stockData?.values.map((item) => item[5]);
-        let minPrice = Math.min(...closePrice);
-
+        // let minPrice = Math.min(...closePrice);
         return {
             animation: false,
             tooltip: {
@@ -143,7 +142,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                     type: 'value',
                     name: '종가',
                     scale: true,
-                    min: minPrice - Math.pow(10, minPrice.toString().length - 1),
+                    // min: minPrice - Math.pow(10, minPrice.toString().length - 1),
                 },
                 {
                     type: 'value',
@@ -291,7 +290,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
         <ReactECharts
             className={'lineChart'}
             option={getOption()}
-            style={{ height: '40%' }}
+            style={{ height: 'calc(100% - 400px)' }}
             onEvents={onEvents}
         />
     )

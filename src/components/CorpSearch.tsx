@@ -18,11 +18,17 @@ import Keywords from './Keywords';
 
 
 const Container = styled.div`
-    width: auto;
+    top: 5px;
+    left: 5px;
+    position: fixed;
+    background-color:#fff;
+    width: 580px;
+    height: 400px;
     border: 1px solid #999;
     border-radius: 6px;
     padding: 8px 16px 0px;
-    box-shadow: 0px 3px 5px rgba(0,0,0,0.1);
+    box-shadow: 3px 5px 10px rgba(0,0,0,0.1);
+    z-index:999;
     & > div {
         display: flex;
         align-items: center;
@@ -100,6 +106,32 @@ const Container = styled.div`
         }
     }
     // 공시 유형 선택
+    .dartMenu {
+        ul {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            li {
+                padding: 0 5px;
+                border: 1px solid #e1e1e1;
+                border-radius: 5px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.8rem;
+                font-weight: bolder;
+                cursor: pointer;
+                &.active {
+                    border-color: #00b222;
+                    color: #00b222;
+                }
+            }
+            li + li {
+                margin-left: 8px;
+            }
+        }
+    }
 `
 
 const CustomDatePicker = styled(DatePicker)`
@@ -198,6 +230,16 @@ const CorpSearch = (): JSX.Element => {
                     <li className={periodMenu === 'sixMonth' ? 'active' : undefined} onClick={periodMenuClick}>6개월</li>
                     <li className={periodMenu === 'oneYear' ? 'active' : undefined} onClick={periodMenuClick}>1년</li>
                     <li className={periodMenu === 'twoYear' ? 'active' : undefined} onClick={periodMenuClick}>2년</li>
+                </ul>
+            </div>
+            <div className='dartMenu'>
+                <h4>공시유형</h4>
+                <ul>
+                    <li>유증</li>
+                    <li>CB</li>
+                    <li>BW</li>
+                    <li>대량보유</li>
+                    <li>타법인 주식 양수도</li>
                 </ul>
             </div>
 

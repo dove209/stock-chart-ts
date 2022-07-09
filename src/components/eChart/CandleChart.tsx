@@ -260,7 +260,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
         <ReactECharts
             className={'candleChart'}
             option={getOption()}
-            style={{ height: '60%' }}
+            style={{ height: '400px', width: 'calc(100% - 580px)', marginLeft: '580px' }}
             onEvents={onEvents}
         />
     )
