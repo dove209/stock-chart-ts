@@ -113,6 +113,24 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>양도목적:<b>${stockData?.ocsisTrf[idx]?.trf_pp}</b></p>
                         </div>
                         `
+                    // 주권 관련 사채권 양수
+                    } else if (stockData?.stkrtbdInh[idx]) {
+                        return `
+                        <div class='dart_tooltip'>
+                            <div class='header'>${params[0].name}</div>
+                            <p>사채권(회차):<b>${stockData?.stkrtbdInh[idx]?.stkrtbd_kndn}(${stockData?.stkrtbdInh[idx]?.tm}회차)</b></p>
+                            <p>양수목적:<b>${stockData?.stkrtbdInh[idx]?.inh_pp}</b></p>
+                        </div>
+                        `
+                    // 주권 관련 사채권 양도
+                    } else if (stockData?.stkrtbdTrf[idx]) {
+                        return `
+                        <div class='dart_tooltip'>
+                            <div class='header'>${params[0].name}</div>
+                            <p>사채권(회차):<b>${stockData?.stkrtbdTrf[idx]?.stkrtbd_kndn}(${stockData?.stkrtbdTrf[idx]?.tm}회차)</b></p>
+                            <p>양도목적:<b>${stockData?.stkrtbdTrf[idx]?.trf_pp}</b></p>
+                        </div>
+                        `
                     } else {
                         return `
                             <div class='tooltip'>
@@ -198,6 +216,12 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             if (stockData?.ocsisTrf[d.dataIndex]) {
                                 labelArr.push(`타법인 주식 양도`);
                             }
+                            if (stockData?.stkrtbdInh[d.dataIndex]) {
+                                labelArr.push(`사채권 양수`);
+                            }
+                            if (stockData?.stkrtbdTrf[d.dataIndex]) {
+                                labelArr.push(`사채권 양도`);
+                            }
                             if (labelArr.length !== 0) {
                                 labelArr.push('↓')
                             }
@@ -278,6 +302,16 @@ const LineChart = ({ stockData }: LineChartProps) => {
         if (stockData.ocsisTrf[e.dataIndex]) {
             let rceptNo = stockData?.ocsisTrf[e.dataIndex]?.rcept_no;
             window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '타법인 주식 양도', 'width=1300, height=1000, scrollbars=yes')
+        }
+        // 주권 관련 사채권 양수
+        if (stockData.stkrtbdInh[e.dataIndex]) {
+            let rceptNo = stockData?.stkrtbdInh[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '사채권 양수', 'width=1300, height=1000, scrollbars=yes')
+        }
+        // 주권 관련 사채권 양도
+        if (stockData.stkrtbdTrf[e.dataIndex]) {
+            let rceptNo = stockData?.stkrtbdTrf[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '사채권 양도', 'width=1300, height=1000, scrollbars=yes')
         }
     }
 

@@ -27,7 +27,7 @@ export const calculateMA = (dayCount, data) => {
 
 
 // 차트, 공시 정보가 포함된 메인 데이터
-export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData) => {
+export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData) => {
   let categoryData = [];
   let values = [];
   let volumes = [];
@@ -190,6 +190,40 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
         ocsisTrf[findIdx] = ocsisTrfObj;
     });
   }
+
+  // 주권 관련 사채권 양수 공시
+  let stkrtbdInh = new Array(categoryData.length).fill(null);
+  if (!!stkrtbdInhData) {
+    stkrtbdInhData.forEach((data) => {
+      let bddd = data.bddd.replace(/(\s*)/g, "");
+      let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
+      let findIdx = categoryData.indexOf(dateFormat);
+        let stkrtbdInhObj = {
+          rcept_no:data.rcept_no,
+          stkrtbd_kndn: data.stkrtbd_kndn, //사채 종류
+          tm: data.tm, //사채 회차
+          inh_pp: data.inh_pp, //양수 목적
+        };
+        stkrtbdInh[findIdx] = stkrtbdInhObj;
+    });
+  }
+  // 주권 관련 사채권 양도 공시
+  let stkrtbdTrf = new Array(categoryData.length).fill(null);
+  if (!!stkrtbdTrfData) {
+    stkrtbdTrfData.forEach((data) => {
+      let bddd = data.bddd.replace(/(\s*)/g, "");
+      let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
+      let findIdx = categoryData.indexOf(dateFormat);
+        let stkrtbdTrfObj = {
+          rcept_no:data.rcept_no,
+          stkrtbd_kndn: data.stkrtbd_kndn, //사채 종류
+          tm: data.tm, //사채 회차
+          trf_pp: data.trf_pp, //양도 목적
+        };
+        stkrtbdTrf[findIdx] = stkrtbdTrfObj;
+    });
+  }
+  
   return {
     categoryData: categoryData,
     values: values,
@@ -200,7 +234,9 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
     adjustCB: adjustCB,   //CB가 조정
     majorStock: majorStock, //주식등의대량보유상황
     ocsisInh: ocsisInh, //타법인 주식 증권 양수
-    ocsisTrf: ocsisTrf  //타법인 주식 증권 양도
+    ocsisTrf: ocsisTrf,  //타법인 주식 증권 양도
+    stkrtbdInh: stkrtbdInh,  //사채권 양수
+    stkrtbdTrf: stkrtbdTrf,  //사채권 양도
   };
 };
 

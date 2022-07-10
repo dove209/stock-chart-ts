@@ -9,4 +9,6 @@ export interface IStockData {
     majorStock: any[]
     ocsisInh: any[]
     ocsisTrf: any[]
+    stkrtbdInh: any[]
+    stkrtbdTrf: any[]
 }

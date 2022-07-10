@@ -183,6 +183,9 @@ const CorpSearch = (): JSX.Element => {
             case '대량보유':
                 setNoticeMenu({...noticeMenu, majorStock: !noticeMenu.majorStock})
                 break;
+            case '사채권 양수도':
+                setNoticeMenu({...noticeMenu, stkrtbd: !noticeMenu.stkrtbd})
+                break;
             case '타법인 주식 양수도':
                 setNoticeMenu({...noticeMenu, otcprStkInvscr: !noticeMenu.otcprStkInvscr})
                 break;
@@ -233,6 +236,7 @@ const CorpSearch = (): JSX.Element => {
             bw: true,
             majorStock: true,
             otcprStkInvscr: true,
+            stkrtbd: true,
         })
         setPeriodMenu('oneYear');
     }
@@ -274,6 +278,7 @@ const CorpSearch = (): JSX.Element => {
                     <li className={noticeMenu.cb ? 'active' : undefined} onClick={noticeMenuClick}>CB</li>
                     <li className={noticeMenu.bw ? 'active' : undefined} onClick={noticeMenuClick}>BW</li>
                     <li className={noticeMenu.majorStock ? 'active' : undefined} onClick={noticeMenuClick}>대량보유</li>
+                    <li className={noticeMenu.stkrtbd ? 'active' : undefined} onClick={noticeMenuClick}>사채권 양수도</li>
                     <li className={noticeMenu.otcprStkInvscr ? 'active' : undefined} onClick={noticeMenuClick}>타법인 주식 양수도</li>
                 </ul>
             </div>
