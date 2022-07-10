@@ -12,6 +12,7 @@ import { corpCodeState } from '../recoil/corpCode';
 import { periodState } from '../recoil/period';
 import { isSearchState } from '../recoil/isSearch';
 import { keywordsState } from '../recoil/keywords';
+import { noticeMenuState } from '../recoil/noticeMenu';
 
 import AutoComplete from './AutoComplete';
 import Keywords from './Keywords';
@@ -150,6 +151,7 @@ const CorpSearch = (): JSX.Element => {
     const [period, setPeriod] = useRecoilState(periodState);             // 시작일 ~ 종료일
     const [periodMenu, setPeriodMenu] = useState<string>('oneYear');     // 기간 메뉴 1년전(기본)
     const [isSearching, setIsSearching] = useRecoilState(isSearchState); // 검색중
+    const [noticeMenu, setNoticeMenu] = useRecoilState(noticeMenuState); // 공시 유형
     const [keywords, setKeywords] = useRecoilState(keywordsState);       // 최근 검색 기록
 
     // 기간 메뉴 선택
@@ -162,6 +164,31 @@ const CorpSearch = (): JSX.Element => {
             startDate: text === '1개월' ? oneMonthAgo(new Date()) : text === '6개월' ? sixMonthAgo(new Date()) : text === '1년' ? oneYearAgo(new Date()) : text === '2년' ? twoYearAgo(new Date()) : oneMonthAgo(new Date()),
             endDate: new Date()
         })
+    }
+
+    // 공시유형 메뉴 선택
+    const noticeMenuClick = (e: React.MouseEvent<HTMLLIElement>) => {
+        e.preventDefault();
+        let text = (e.currentTarget as Element).textContent;
+        switch(text){
+            case '유증':
+                setNoticeMenu({...noticeMenu, piic: !noticeMenu.piic})
+                break;
+            case 'CB':
+                setNoticeMenu({...noticeMenu, cb: !noticeMenu.cb})
+                break;
+            case 'BW':
+                setNoticeMenu({...noticeMenu, bw: !noticeMenu.bw})
+                break;
+            case '대량보유':
+                setNoticeMenu({...noticeMenu, majorStock: !noticeMenu.majorStock})
+                break;
+            case '타법인 주식 양수도':
+                setNoticeMenu({...noticeMenu, otcprStkInvscr: !noticeMenu.otcprStkInvscr})
+                break;
+            default:
+                break;
+        }
     }
 
     // 종목 검색
@@ -199,7 +226,15 @@ const CorpSearch = (): JSX.Element => {
             startDate: oneYearAgo(new Date()),
             endDate: new Date()
         })
-        setPeriodMenu('oneYear')
+        setNoticeMenu({
+            ...noticeMenu,
+            piic: true,
+            cb: true,
+            bw: true,
+            majorStock: true,
+            otcprStkInvscr: true,
+        })
+        setPeriodMenu('oneYear');
     }
 
 
@@ -235,11 +270,11 @@ const CorpSearch = (): JSX.Element => {
             <div className='dartMenu'>
                 <h4>공시유형</h4>
                 <ul>
-                    <li>유증</li>
-                    <li>CB</li>
-                    <li>BW</li>
-                    <li>대량보유</li>
-                    <li>타법인 주식 양수도</li>
+                    <li className={noticeMenu.piic ? 'active' : undefined} onClick={noticeMenuClick}>유증</li>
+                    <li className={noticeMenu.cb ? 'active' : undefined} onClick={noticeMenuClick}>CB</li>
+                    <li className={noticeMenu.bw ? 'active' : undefined} onClick={noticeMenuClick}>BW</li>
+                    <li className={noticeMenu.majorStock ? 'active' : undefined} onClick={noticeMenuClick}>대량보유</li>
+                    <li className={noticeMenu.otcprStkInvscr ? 'active' : undefined} onClick={noticeMenuClick}>타법인 주식 양수도</li>
                 </ul>
             </div>
 
