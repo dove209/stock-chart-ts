@@ -212,6 +212,12 @@ const CorpSearch = (): JSX.Element => {
             case '타법인 주식 양수도':
                 setNoticeMenu({ ...noticeMenu, otcprStkInvscr: !noticeMenu.otcprStkInvscr })
                 break;
+            case '임원ㆍ주요주주 소유':
+                setNoticeMenu({ ...noticeMenu, elestock: !noticeMenu.elestock })
+                break;
+            case '신규시설투자':
+                setNoticeMenu({ ...noticeMenu, newFacill: !noticeMenu.newFacill })
+                break
             default:
                 break;
         }
@@ -307,6 +313,13 @@ const CorpSearch = (): JSX.Element => {
                             <li className={noticeMenu.majorStock ? 'active' : undefined} onClick={noticeMenuClick}>대량보유</li>
                             <li className={noticeMenu.stkrtbd ? 'active' : undefined} onClick={noticeMenuClick}>사채권 양수도</li>
                             <li className={noticeMenu.otcprStkInvscr ? 'active' : undefined} onClick={noticeMenuClick}>타법인 주식 양수도</li>
+                        </ul>
+                    </div>
+                    <div className='dartMenu'>
+                        <h4></h4>
+                        <ul>
+                            <li className={noticeMenu.elestock ? 'active' : undefined} onClick={noticeMenuClick}>임원ㆍ주요주주 소유</li>
+                            <li className={noticeMenu.newFacill ? 'active' : undefined} onClick={noticeMenuClick}>신규시설투자</li>
                         </ul>
                     </div>
 

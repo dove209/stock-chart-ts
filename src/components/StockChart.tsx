@@ -40,8 +40,10 @@ const StockChart = () => {
           const ocsisTrfData = noticeMenu.otcprStkInvscr ? (await axios.get(`dartAPI/otcprStkInvscrTrfDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list : [];//opendart 타법인 주식 및 출자증권 양도
           const stkrtbdInhData = noticeMenu.stkrtbd ? (await axios.get(`dartAPI/stkrtbdInhDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list : [];//opendart 사채권 양수
           const stkrtbdTrfData = noticeMenu.stkrtbd ? (await axios.get(`dartAPI/stkrtbdTrfDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list : [];//opendart 사채권 양도
+          const eleStockData = noticeMenu.elestock ? (await axios.get(`dartAPI/elestock.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}`)).data.list : [];//opendart 임원ㆍ주요주주 소유 보고
+          const newFacillData = noticeMenu.newFacill ? (await axios.get(`dartAPI/list.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}&page_count=100&pblntf_ty=I`)).data.list : [];//opendart 신규시설 투자
           const rawData = getStockDate(priceData);
-          setStockData(mainData(rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData));
+          setStockData(mainData(rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData, eleStockData, newFacillData));
           setIsSearching(false);
         } catch (e) {
           console.log(e)

@@ -7,6 +7,8 @@ export interface INoticeMenu {
     majorStock: boolean;//대량보유
     otcprStkInvscr: boolean; //타법인 주식 증권 양수도
     stkrtbd: boolean; //주권 관련 사채권 양수도
+    elestock: boolean; //임원ㆍ주요주주 소유 보고
+    newFacill: boolean; //신규시설투자
 };
 
 // 업데이트
@@ -18,6 +20,8 @@ export const noticeMenuState = atom<INoticeMenu>({
         bw: true,
         majorStock: true,
         otcprStkInvscr: true,
-        stkrtbd: true
+        stkrtbd: true,
+        elestock: true,
+        newFacill: true,
     }
 })

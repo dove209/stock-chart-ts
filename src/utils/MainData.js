@@ -27,7 +27,7 @@ export const calculateMA = (dayCount, data) => {
 
 
 // 차트, 공시 정보가 포함된 메인 데이터
-export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData) => {
+export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData, eleStockData, newFacillData) => {
   let categoryData = [];
   let values = [];
   let volumes = [];
@@ -167,12 +167,12 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
       let bddd = data.bddd.replace(/(\s*)/g, "");
       let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
       let findIdx = categoryData.indexOf(dateFormat);
-        let ocsisInhObj = {
-          rcept_no:data.rcept_no,
-          iscmp_cmpnm: data.iscmp_cmpnm, //발행회사
-          inh_pp: data.inh_pp, //양수목적
-        };
-        ocsisInh[findIdx] = ocsisInhObj;
+      let ocsisInhObj = {
+        rcept_no:data.rcept_no,
+        iscmp_cmpnm: data.iscmp_cmpnm, //발행회사
+        inh_pp: data.inh_pp, //양수목적
+      };
+      ocsisInh[findIdx] = ocsisInhObj;
     });
   }
   // 타법인 주식 및 출자증권 양도 공시
@@ -182,12 +182,12 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
       let bddd = data.bddd.replace(/(\s*)/g, "");
       let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
       let findIdx = categoryData.indexOf(dateFormat);
-        let ocsisTrfObj = {
-          rcept_no:data.rcept_no,
-          iscmp_cmpnm: data.iscmp_cmpnm, //발행회사
-          trf_pp: data.trf_pp, //양도목적
-        };
-        ocsisTrf[findIdx] = ocsisTrfObj;
+      let ocsisTrfObj = {
+        rcept_no:data.rcept_no,
+        iscmp_cmpnm: data.iscmp_cmpnm, //발행회사
+        trf_pp: data.trf_pp, //양도목적
+      };
+      ocsisTrf[findIdx] = ocsisTrfObj;
     });
   }
 
@@ -223,6 +223,42 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
         stkrtbdTrf[findIdx] = stkrtbdTrfObj;
     });
   }
+
+  //임원ㆍ주요주주 소유보고
+  let eleStock = new Array(categoryData.length).fill(null);
+  if (!!eleStockData) {
+    eleStockData.forEach((data) => {
+      let findIdx = categoryData.indexOf(data.rcept_dt);
+      if(findIdx >= 0) {
+        let eleStockfObj = {
+          rcept_no:data.rcept_no,
+          repror:data.repror, //보고자
+          isu_exctv_rgist_at:data.isu_exctv_rgist_at, //임원
+          isu_exctv_ofcps:data.isu_exctv_ofcps, //임원 직위
+          isu_main_shrholdr:data.isu_main_shrholdr, //주요 주주
+          sp_stock_lmp_irds_cnt: data.sp_stock_lmp_irds_cnt, // 소유 증감 수
+          sp_stock_lmp_irds_rate: data.sp_stock_lmp_irds_rate// 소유 증감 비율
+        };
+        eleStock[findIdx] = eleStockfObj;
+      }
+    });
+  };
+  
+  //신규시설투자
+  let newFacill = new Array(categoryData.length).fill(null);
+  if (!!newFacillData) {
+    newFacillData.forEach((data) => {
+      if(data.report_nm.includes('신규시설투자')) {
+        let dateFormat = `${data.rcept_dt.substr(0, 4)}-${data.rcept_dt.substr(4,2)}-${data.rcept_no.substr(6, 2)}`;
+        let findIdx = categoryData.indexOf(dateFormat);
+        let newFacillObj = {
+          rcept_no:data.rcept_no,
+          report_nm: data.report_nm, //리포트 이름
+        };
+        newFacill[findIdx] = newFacillObj;
+      }
+    });
+  };
   
   return {
     categoryData: categoryData,
@@ -237,6 +273,8 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
     ocsisTrf: ocsisTrf,  //타법인 주식 증권 양도
     stkrtbdInh: stkrtbdInh,  //사채권 양수
     stkrtbdTrf: stkrtbdTrf,  //사채권 양도
+    eleStock: eleStock,   //임원ㆍ주요주주 소유보고
+    newFacill: newFacill, //신규시설투자
   };
 };
 

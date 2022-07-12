@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from "echarts";
+import { isFoldState } from '../../recoil/isFold';
+import { useRecoilValue } from 'recoil';
 
 import { calculateMA } from '../../utils/MainData';
 import { IStockData } from '../../../types/stockData';
@@ -11,6 +13,7 @@ type CandleChartProps = {
 }
 
 const CandleChart = ({ stockData }: CandleChartProps) => {
+    const isFold = useRecoilValue(isFoldState);
     const getOption = useCallback(() => {
         const upColor = '#ec0000';
         const downColor = '#0A7DF2';
@@ -260,7 +263,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
         <ReactECharts
             className={'candleChart'}
             option={getOption()}
-            style={{ height: '400px', width: 'calc(100% - 580px)', marginLeft: '580px' }}
+            style={{ height: '400px', width: isFold ? '100%' : 'calc(100% - 580px)', marginLeft: isFold ? '0px' : '580px' }}
             onEvents={onEvents}
         />
     )

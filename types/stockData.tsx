@@ -11,4 +11,6 @@ export interface IStockData {
     ocsisTrf: any[]
     stkrtbdInh: any[]
     stkrtbdTrf: any[]
+    eleStock: any[]
+    newFacill: any[]
 }

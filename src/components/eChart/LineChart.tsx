@@ -45,7 +45,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>전환청구기간: <b>${stockData?.cvbdIsDecsn[idx]?.cvrqpd_bgd} ~ ${stockData?.cvbdIsDecsn[idx]?.cvrqpd_edd}</b></p>
                         </div>
                         `;
-                    //BW 발행 공시
+                        //BW 발행 공시
                     } else if (stockData?.bwbdIsDecsn[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -62,7 +62,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>권한행사기간: <b>${stockData?.bwbdIsDecsn[idx]?.expd_bgd} ~ ${stockData?.bwbdIsDecsn[idx]?.expd_edd}</b></p>
                         </div>
                         `
-                    // 전환가액조정 공시
+                        // 전환가액조정 공시
                     } else if (stockData?.piicDecsn[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -76,7 +76,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>기타자금:<b>${stockData?.piicDecsn[idx]?.fdpp_etc}원</b></p>
                         </div>
                         `
-                    // 전환가액조정 공시
+                        // 전환가액조정 공시
                     } else if (stockData?.adjustCB[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -84,7 +84,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>보고서명:<b>${stockData?.adjustCB[idx]?.report_nm}</b></p>
                         </div>
                         `
-                     // 주식등의대량보유상황보고
+                        // 주식등의대량보유상황보고
                     } else if (stockData?.majorStock[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -95,7 +95,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
 
                         </div>
                         `
-                    // 타법인 주식 및 출자증권 양수
+                        // 타법인 주식 및 출자증권 양수
                     } else if (stockData?.ocsisInh[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -104,7 +104,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>양수목적:<b>${stockData?.ocsisInh[idx]?.inh_pp}</b></p>
                         </div>
                         `
-                    // 타법인 주식 및 출자증권 양도
+                        // 타법인 주식 및 출자증권 양도
                     } else if (stockData?.ocsisTrf[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -113,7 +113,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>양도목적:<b>${stockData?.ocsisTrf[idx]?.trf_pp}</b></p>
                         </div>
                         `
-                    // 주권 관련 사채권 양수
+                        // 주권 관련 사채권 양수
                     } else if (stockData?.stkrtbdInh[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -122,7 +122,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>양수목적:<b>${stockData?.stkrtbdInh[idx]?.inh_pp}</b></p>
                         </div>
                         `
-                    // 주권 관련 사채권 양도
+                        // 주권 관련 사채권 양도
                     } else if (stockData?.stkrtbdTrf[idx]) {
                         return `
                         <div class='dart_tooltip'>
@@ -131,7 +131,26 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             <p>양도목적:<b>${stockData?.stkrtbdTrf[idx]?.trf_pp}</b></p>
                         </div>
                         `
-                    } else {
+                        // 임원ㆍ주요주주 소유보고
+                    } else if (stockData?.eleStock[idx]) {
+                        return `
+                        <div class='dart_tooltip'>
+                            <div class='header'>${params[0].name}</div>
+                            <p>보고자(직위):<b>${stockData?.eleStock[idx]?.repror}(${stockData?.eleStock[idx]?.isu_exctv_ofcps})</b></p>
+                            <p>주주:<b>${stockData?.eleStock[idx]?.isu_main_shrholdr}</b></p>
+                            <p>소유 증가 수(비율):<b>${stockData?.eleStock[idx]?.sp_stock_lmp_irds_cnt}(${stockData?.eleStock[idx]?.sp_stock_lmp_irds_rate}%)</b></p>
+                        </div>
+                        `
+                        // 신규시설투자
+                    } else if (stockData?.newFacill[idx]) {
+                        return `
+                        <div class='dart_tooltip'>
+                            <div class='header'>${params[0].name}</div>
+                            <p>보고서:<b>${stockData?.newFacill[idx].report_nm}</b></p>
+                        </div>
+                        `
+                    }
+                    else {
                         return `
                             <div class='tooltip'>
                                 <div class='header'>${params[0].name}</div>
@@ -222,6 +241,12 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             if (stockData?.stkrtbdTrf[d.dataIndex]) {
                                 labelArr.push(`사채권 양도`);
                             }
+                            if (stockData?.eleStock[d.dataIndex]) {
+                                labelArr.push(`임원ㆍ주주 소유`);
+                            }
+                            if (stockData?.newFacill[d.dataIndex]) {
+                                labelArr.push(`신규시설투자`);
+                            }
                             if (labelArr.length !== 0) {
                                 labelArr.push('↓')
                             }
@@ -286,7 +311,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
             let rceptNo = stockData?.adjustCB[e.dataIndex]?.rcept_no;
             window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, 'CB조정', 'width=1300, height=1000, scrollbars=yes')
         }
-        
+
         // 주식등대량보유상황
         if (stockData.majorStock[e.dataIndex]) {
             let rceptNo = stockData?.majorStock[e.dataIndex]?.rcept_no;
@@ -312,6 +337,16 @@ const LineChart = ({ stockData }: LineChartProps) => {
         if (stockData.stkrtbdTrf[e.dataIndex]) {
             let rceptNo = stockData?.stkrtbdTrf[e.dataIndex]?.rcept_no;
             window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '사채권 양도', 'width=1300, height=1000, scrollbars=yes')
+        }
+        // 임원ㆍ주요주주 소유 보고
+        if (stockData.eleStock[e.dataIndex]) {
+            let rceptNo = stockData?.eleStock[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '임원ㆍ주요주주 소유 보고', 'width=1300, height=1000, scrollbars=yes')
+        }
+        // 신규시설투자
+        if (stockData.newFacill[e.dataIndex]) {
+            let rceptNo = stockData?.newFacill[e.dataIndex]?.rcept_no;
+            window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '신규시설투자', 'width=1300, height=1000, scrollbars=yes')
         }
     }
 
