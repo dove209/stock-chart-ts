@@ -48,7 +48,7 @@ const StockChart = () => {
           setStockData(mainData(rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData, eleStockData, newFacillData));
           setIsSearching(false);
         } catch (e) {
-          console.log(e)
+          console.log(e);
         }
       }
     }
