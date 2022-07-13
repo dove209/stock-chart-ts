@@ -278,7 +278,7 @@ const CorpSearch = (): JSX.Element => {
                 :
                 <>
                     <div className='corpName'>
-                        <h4>회사이름</h4>
+                        <h4>회사명</h4>
                         <AutoComplete value={corpName} setCorpName={setCorpName} />
                     </div>
                     <div className='period'>
