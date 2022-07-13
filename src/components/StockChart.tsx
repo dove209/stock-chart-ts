@@ -28,7 +28,7 @@ const StockChart = () => {
     const getNaverStockData = async () => {
       if (isSearching) {
         try {
-          const PROXY = window.location.hostname === 'localhost' ? '/naverAPI' : '/proxy';
+          const PROXY = process.env.NODE_ENV === 'development' ? '/naverAPI' : '/proxy';
           console.log(PROXY);
           const startTime = dateFormat(period?.startDate);
           const endTime = dateFormat(period?.endDate);
