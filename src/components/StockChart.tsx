@@ -29,6 +29,7 @@ const StockChart = () => {
       if (isSearching) {
         try {
           const PROXY = window.location.hostname === 'localhost' ? '/naverAPI' : '/proxy';
+          console.log(PROXY);
           const startTime = dateFormat(period?.startDate);
           const endTime = dateFormat(period?.endDate);
           const { data: priceData } = await axios.get(`${PROXY}/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`); //naver 주식 데이터
