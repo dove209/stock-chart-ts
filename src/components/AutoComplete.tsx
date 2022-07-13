@@ -94,7 +94,7 @@ const AutoComplete = ({ value, setCorpName }: AutoCompleteProps) => {
                     autoFocus
                     type={'text'}
                     value={value}
-                    placeholder={'종목명 입력'}
+                    placeholder={'회사명 입력'}
                     onChange={changeInputValue}
                     onFocus={onFocus}
                     onBlur={onBlue}
