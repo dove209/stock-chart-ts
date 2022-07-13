@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import corpCode from '../corpData/corp_code.json';

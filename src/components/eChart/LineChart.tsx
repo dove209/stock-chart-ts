@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from "echarts";
 
