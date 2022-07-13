@@ -1,5 +1,12 @@
 [[redirects]]
-from = "/proxy/*"
-  to = "https://api.finance.naver.com/:splat"  
-  status = 200
-  force = true
+from = "/proxyNaver/*"
+to = "https://api.finance.naver.com/:splat"  
+status = 200
+force = true
+
+
+[[redirects]]
+from = "/proxyDart/*"
+to = "https://opendart.fss.or.kr/api/:splat"  
+status = 200
+force = true
