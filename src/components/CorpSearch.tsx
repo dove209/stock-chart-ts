@@ -305,7 +305,7 @@ const CorpSearch = (): JSX.Element => {
                         </ul>
                     </div>
                     <div className='dartMenu'>
-                        <h4>공시유형</h4>
+                        <h4>공시유</h4>
                         <ul>
                             <li className={noticeMenu.piic ? 'active' : undefined} onClick={noticeMenuClick}>유증</li>
                             <li className={noticeMenu.cb ? 'active' : undefined} onClick={noticeMenuClick}>CB</li>
