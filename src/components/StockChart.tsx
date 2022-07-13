@@ -28,9 +28,10 @@ const StockChart = () => {
     const getNaverStockData = async () => {
       if (isSearching) {
         try {
+          const PROXY = window.location.hostname === 'localhost' ? '/naverAPI' : '/proxy';
           const startTime = dateFormat(period?.startDate);
           const endTime = dateFormat(period?.endDate);
-          const { data: priceData } = await axios.get(`naverAPI/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`); //naver 주식 데이터
+          const { data: priceData } = await axios.get(`${PROXY}/siseJson.naver?symbol=${corpCode?.stock_code}&requestType=1&startTime=${startTime}&endTime=${endTime}&timeframe=day`); //naver 주식 데이터
           const piicData = noticeMenu.piic ? (await axios.get(`dartAPI/piicDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list : []; //opendart 유상증자 API
           const cdbdData = noticeMenu.cb ? (await axios.get(`dartAPI/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list : []; //opendart 전환사채
           const bwbdData = noticeMenu.bw ? (await axios.get(`dartAPI/bdwtIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list : []; //opendart 신주인수권부사채

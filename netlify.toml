@@ -1,0 +1,5 @@
+[[redirects]]
+from = "/proxy/*"
+  to = "https://api.finance.naver.com/:splat"  
+  status = 200
+  force = true
