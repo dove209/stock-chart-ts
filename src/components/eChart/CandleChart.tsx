@@ -10,9 +10,10 @@ import { IStockData } from '../../../types/stockData';
 
 type CandleChartProps = {
     stockData: IStockData;
+    corpName: string | undefined;
 }
 
-const CandleChart = ({ stockData }: CandleChartProps) => {
+const CandleChart = ({ stockData, corpName }: CandleChartProps) => {
     const isFold = useRecoilValue(isFoldState);
     const getOption = useCallback(() => {
         const upColor = '#ec0000';
@@ -22,7 +23,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
             legend: {
                 top: 10,
                 left: 'center',
-                data: ['5일선', '10일선', '20일선', '60일선', '120일선']
+                data: [`${corpName}`, '5일선', '10일선', '20일선', '60일선', '120일선']
             },
             tooltip: {
                 trigger: 'axis',
@@ -153,7 +154,7 @@ const CandleChart = ({ stockData }: CandleChartProps) => {
             ],
             series: [
                 {
-                    name: '단위(원)',
+                    name: `${corpName}`,
                     type: 'candlestick',
                     data: stockData?.values,
                     itemStyle: {

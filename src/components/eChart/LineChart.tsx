@@ -28,137 +28,149 @@ const LineChart = ({ stockData }: LineChartProps) => {
                 },
                 formatter: function (params: any) {
                     let idx = params[0].dataIndex;
+                    let dateHeader = `<div class='header'>${params[0].name}</div>`
+                    let tooltipArr = [];
                     // CB 발행 공시
                     if (stockData?.cvbdIsDecsn[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
-                            <p>${stockData?.cvbdIsDecsn[idx]?.bd_tm}회차 [${stockData?.cvbdIsDecsn[idx]?.bd_knd}]</p>
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>CB발행 (${stockData?.cvbdIsDecsn[idx]?.bd_tm}회차) [${stockData?.cvbdIsDecsn[idx]?.bd_knd}] </p>
                             <p>사채 총액:<b>${stockData?.cvbdIsDecsn[idx]?.bd_fta}원</b></p>
-                            <p>시설자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_fclt}원</b></p>
-                            <p>영업양수자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_bsninh}원</b></p>
-                            <p>운영자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_op}원</b></p>
-                            <p>채무상황자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>
-                            <p>타법인 증권 취득 자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>
-                            <p>기타자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_etc}원</b></p>
+                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_fclt !== '-' ? `<p>시설자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_fclt}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_bsninh !== '-' ? `<p>영업양수자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_bsninh}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_op !== '-' ? `<p>운영자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_op}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_etc}원</b></p>` : ''}
                             <p>전환가액:<b>${stockData?.cvbdIsDecsn[idx]?.cv_prc}원</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;최소전환가액:<b>${stockData?.cvbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원</b></p>
                             <p>전환청구기간: <b>${stockData?.cvbdIsDecsn[idx]?.cvrqpd_bgd} ~ ${stockData?.cvbdIsDecsn[idx]?.cvrqpd_edd}</b></p>
                         </div>
-                        `;
-                        //BW 발행 공시
-                    } else if (stockData?.bwbdIsDecsn[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
-                            <p>${stockData?.bwbdIsDecsn[idx]?.bd_tm}회차 [${stockData?.bwbdIsDecsn[idx]?.bd_knd}]</p>
+                        `);
+                    }
+                    //BW 발행 공시
+                    if (stockData?.bwbdIsDecsn[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>BW발행 (${stockData?.bwbdIsDecsn[idx]?.bd_tm}회차) [${stockData?.bwbdIsDecsn[idx]?.bd_knd}] </p>
                             <p>사채 총액:<b>${stockData?.bwbdIsDecsn[idx]?.bd_fta}원</b></p>
-                            <p>시설자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_fclt}원</b></p>
-                            <p>영업양수자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_bsninh}원</b></p>
-                            <p>운영자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_op}원</b></p>
-                            <p>채무상황자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>
-                            <p>타법인 증권 취득 자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>
-                            <p>기타자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_etc}원</b></p>
+                            ${stockData?.bwbdIsDecsn[idx]?.fdpp_fclt !== '-' ? `<p>시설자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_fclt}원</b></p>` : ''}
+                            ${stockData?.bwbdIsDecsn[idx]?.fdpp_bsninh !== '-' ? `<p>영업양수자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_bsninh}원</b></p>` : ''}
+                            ${stockData?.bwbdIsDecsn[idx]?.fdpp_op !== '-' ? `<p>운영자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_op}원</b></p>` : ''}
+                            ${stockData?.bwbdIsDecsn[idx]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>` : ''}
+                            ${stockData?.bwbdIsDecsn[idx]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>` : ''}
+                            ${stockData?.bwbdIsDecsn[idx]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_etc}원</b></p>` : ''}
                             <p>행사가액:<b>${stockData?.bwbdIsDecsn[idx]?.ex_prc}원</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;최소행사가액:<b>${stockData?.bwbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원</b></p>
                             <p>권한행사기간: <b>${stockData?.bwbdIsDecsn[idx]?.expd_bgd} ~ ${stockData?.bwbdIsDecsn[idx]?.expd_edd}</b></p>
                         </div>
-                        `
-                        // 전환가액조정 공시
-                    } else if (stockData?.piicDecsn[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
-                            <p>증자방식:<b>${stockData?.piicDecsn[idx]?.ic_mthn}원</b></p>
-                            <p>시설자금:<b>${stockData?.piicDecsn[idx]?.fdpp_fclt}원</b></p>
-                            <p>영업양수자금:<b>${stockData?.piicDecsn[idx]?.fdpp_bsninh}원</b></p>
-                            <p>운영자금:<b>${stockData?.piicDecsn[idx]?.fdpp_op}원</b></p>
-                            <p>채무상황자금:<b>${stockData?.piicDecsn[idx]?.fdpp_dtrp}원</b></p>
-                            <p>타법인 증권 취득 자금:<b>${stockData?.piicDecsn[idx]?.fdpp_ocsa}원</b></p>
-                            <p>기타자금:<b>${stockData?.piicDecsn[idx]?.fdpp_etc}원</b></p>
+                        `)
+                    }
+                    // 유상증자 공시
+                    if (stockData?.piicDecsn[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>유상증자</p>
+                            <p>증자방식:<b>${stockData?.piicDecsn[idx]?.ic_mthn}</b></p>
+                            ${stockData?.piicDecsn[idx]?.fdpp_fclt !== '-' ? `<p>시설자금:<b>${stockData?.piicDecsn[idx]?.fdpp_fclt}원</b></p>` : ''}
+                            ${stockData?.piicDecsn[idx]?.fdpp_bsninh !== '-' ? `<p>영업양수자금:<b>${stockData?.piicDecsn[idx]?.fdpp_bsninh}원</b></p>` : ''}
+                            ${stockData?.piicDecsn[idx]?.fdpp_op !== '-' ? `<p>운영자금:<b>${stockData?.piicDecsn[idx]?.fdpp_op}원</b></p>` : ''}
+                            ${stockData?.piicDecsn[idx]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.piicDecsn[idx]?.fdpp_dtrp}원</b></p>` : ''}
+                            ${stockData?.piicDecsn[idx]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.piicDecsn[idx]?.fdpp_ocsa}원</b></p>` : ''}
+                            ${stockData?.piicDecsn[idx]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.piicDecsn[idx]?.fdpp_etc}원</b></p>` : ''}
                         </div>
-                        `
-                        // 전환가액조정 공시
-                    } else if (stockData?.adjustCB[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
-                            <p>보고서명:<b>${stockData?.adjustCB[idx]?.report_nm}</b></p>
+                        `)
+                    }
+                    // 전환가액조정 공시
+                    if (stockData?.adjustCB[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>${stockData?.adjustCB[idx]?.report_nm}</p>
                         </div>
-                        `
-                        // 주식등의대량보유상황보고
-                    } else if (stockData?.majorStock[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
+                        `)
+                    }
+                    // 주식등의대량보유상황보고
+                    if (stockData?.majorStock[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>주식등의 대량보유상황보고서</p>
                             <p>대표보고자:<b>${stockData?.majorStock[idx]?.repror}</b></p>
                             <p>보유비율 증감:<b>${stockData?.majorStock[idx]?.stkrt_irds}%</b></p>
                             <p>보고사유:<b>${stockData?.majorStock[idx]?.report_resn}</b></p>
 
                         </div>
-                        `
-                        // 타법인 주식 및 출자증권 양수
-                    } else if (stockData?.ocsisInh[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
+                        `)
+                    }
+                    // 타법인 주식 및 출자증권 양수
+                    if (stockData?.ocsisInh[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>타법인 주식 및 출자증권 양수</p>
                             <p>발행회사:<b>${stockData?.ocsisInh[idx]?.iscmp_cmpnm}</b></p>
                             <p>양수목적:<b>${stockData?.ocsisInh[idx]?.inh_pp}</b></p>
                         </div>
-                        `
-                        // 타법인 주식 및 출자증권 양도
-                    } else if (stockData?.ocsisTrf[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
+                        `)
+                    }
+                    // 타법인 주식 및 출자증권 양도
+                    if (stockData?.ocsisTrf[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>타법인 주식 및 출자증권 양도</p>
                             <p>발행회사:<b>${stockData?.ocsisTrf[idx]?.iscmp_cmpnm}</b></p>
                             <p>양도목적:<b>${stockData?.ocsisTrf[idx]?.trf_pp}</b></p>
                         </div>
-                        `
-                        // 주권 관련 사채권 양수
-                    } else if (stockData?.stkrtbdInh[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
+                        `)
+                    }
+                    // 주권 관련 사채권 양수
+                    if (stockData?.stkrtbdInh[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>주권 관련 사채권 양수</p>
                             <p>사채권(회차):<b>${stockData?.stkrtbdInh[idx]?.stkrtbd_kndn}(${stockData?.stkrtbdInh[idx]?.tm}회차)</b></p>
                             <p>양수목적:<b>${stockData?.stkrtbdInh[idx]?.inh_pp}</b></p>
                         </div>
-                        `
-                        // 주권 관련 사채권 양도
-                    } else if (stockData?.stkrtbdTrf[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
+                        `)
+                    }
+                    // 주권 관련 사채권 양도
+                    if (stockData?.stkrtbdTrf[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>주권 관련 사채권 양도</p>
                             <p>사채권(회차):<b>${stockData?.stkrtbdTrf[idx]?.stkrtbd_kndn}(${stockData?.stkrtbdTrf[idx]?.tm}회차)</b></p>
                             <p>양도목적:<b>${stockData?.stkrtbdTrf[idx]?.trf_pp}</b></p>
                         </div>
-                        `
-                        // 임원ㆍ주요주주 소유보고
-                    } else if (stockData?.eleStock[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
+                        `)
+                    }
+                    // 임원ㆍ주요주주 소유보고
+                    if (stockData?.eleStock[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>임원ㆍ주요주주 소유보고</p>
                             <p>보고자(직위):<b>${stockData?.eleStock[idx]?.repror}(${stockData?.eleStock[idx]?.isu_exctv_ofcps})</b></p>
                             <p>주주:<b>${stockData?.eleStock[idx]?.isu_main_shrholdr}</b></p>
                             <p>소유 증가 수(비율):<b>${stockData?.eleStock[idx]?.sp_stock_lmp_irds_cnt}(${stockData?.eleStock[idx]?.sp_stock_lmp_irds_rate}%)</b></p>
                         </div>
-                        `
-                        // 신규시설투자
-                    } else if (stockData?.newFacill[idx]) {
-                        return `
-                        <div class='dart_tooltip'>
-                            <div class='header'>${params[0].name}</div>
-                            <p>보고서:<b>${stockData?.newFacill[idx].report_nm}</b></p>
+                        `)
+                    }
+                    // 신규시설투자
+                    if (stockData?.newFacill[idx]) {
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>${stockData?.newFacill[idx].report_nm}</p>
                         </div>
-                        `
+                        `)
                     }
-                    else {
-                        return `
-                            <div class='tooltip'>
-                                <div class='header'>${params[0].name}</div>
-                                <p><span class='price'></span>종가<b>${closePrice[idx].toLocaleString()}원</b></p>
-                                <p><span class='foreign'></span>외인지분<b>${foreignRatio[idx]}</b></p>
+                    if (tooltipArr.length === 0) {
+                        tooltipArr.push(`
+                        <div class='tooltip'>
+                            <p><span class='price'></span>종가<b>${closePrice[idx].toLocaleString()}원</b></p>
+                            <p><span class='foreign'></span>외인지분<b>${foreignRatio[idx]}</b></p>
+                        </div>
+                    `);
+                    }
+                    return `<div class='dart_tooltip'>
+                                ${dateHeader}
+                                ${tooltipArr.join('<div class="line"></div>')}
                             </div>
-                        `;
-                    }
+                            `
                 }
             },
             grid: [

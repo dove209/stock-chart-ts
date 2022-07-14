@@ -65,7 +65,7 @@ const StockChart = () => {
     <>
       {!!stockData &&
         <>
-          <CandleChart stockData={stockData} />
+          <CandleChart stockData={stockData} corpName={corpCode?.corp_name} />
           <LineChart stockData={stockData} />
         </>
       }
