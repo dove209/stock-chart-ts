@@ -267,6 +267,8 @@ const CorpSearch = (): JSX.Element => {
             majorStock: true,
             otcprStkInvscr: true,
             stkrtbd: true,
+            elestock: true,
+            newFacill: true,
         })
         setPeriodMenu('oneYear');
     }

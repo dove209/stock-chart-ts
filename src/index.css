@@ -1,5 +1,6 @@
 html,
-body, #root {
+body,
+#root {
   height: 100%;
 }
 
@@ -21,39 +22,52 @@ code {
     monospace;
 }
 
-.tooltip > .header {
+.tooltip>.header {
   margin-bottom: 10px;
 }
-.tooltip > p {
+
+.tooltip>p {
   display: flex;
   align-items: center;
 }
-.tooltip > p > span {
+
+.tooltip>p>span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   margin-right: 5px;
 }
-.tooltip[data-color='upColor'] > p > span {
+
+.tooltip[data-color='upColor']>p>span {
   background-color: #ec0000;
 }
-.tooltip[data-color='downColor'] > p > span {
+
+.tooltip[data-color='downColor']>p>span {
   background-color: #0A7DF2;
 }
-.tooltip > p > .price { 
+
+.tooltip>p>.price {
   background-color: rgb(255, 70, 131);
 }
-.tooltip > p > .foreign { 
+
+.tooltip>p>.foreign {
   background-color: rgba(0, 0, 0, 0.2);
 }
-.tooltip > p > b {
+
+.tooltip>p>b {
   font-weight: 600;
   margin-left: 14px;
 }
 
 
-.dart_tooltip > p > b {
+.dart_tooltip>p>b {
   font-weight: 600;
   margin-left: 4px;
 }
 
+.spiner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

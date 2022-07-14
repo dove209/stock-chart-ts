@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
 
 import { dateFormat } from '../utils/Date';
@@ -15,6 +15,7 @@ import { noticeMenuState } from '../recoil/noticeMenu';
 import { IStockData } from '../../types/stockData';
 import CandleChart from './eChart/CandleChart';
 import LineChart from './eChart/LineChart';
+import Spinner from './Spinner';
 
 const StockChart = () => {
 
@@ -56,9 +57,10 @@ const StockChart = () => {
   }, [isSearching])
 
   useEffect(() => {
-    console.log(stockData)
+    // console.log(stockData)
   }, [stockData])
 
+  if (isSearching) return <Spinner />
   return (
     <>
       {!!stockData &&
