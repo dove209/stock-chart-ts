@@ -233,7 +233,7 @@ const CandleChart = ({ stockData, corpName }: CandleChartProps) => {
                 },
             ]
         };
-    }, [stockData])
+    }, [stockData, corpName])
 
     // let timer: any = null;
     const onChartZoom = (e: any) => {
