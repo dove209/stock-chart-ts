@@ -134,14 +134,6 @@ const CandleChart = ({ stockData, corpName }: CandleChartProps) => {
                     axisLine: { show: false },
                     axisTick: { show: false },
                     splitLine: { show: false },
-                },
-                {
-                    type: 'value',
-                    name: '외인지분',
-                    scale: true,
-                    splitLine: {
-                        show: false,
-                    },
                 }
             ],
             dataZoom: [
