@@ -1,46 +1,69 @@
-# Getting Started with Create React App
+# [주가급등 사유없음] 킁킁이 프로젝트
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+“세력이 주가를 움직이는 길목마다 공시가 보내는 뚜렷한 신호가 있다!”
 
-## Available Scripts
+[주가급등 사유없음] - 장지웅 지음.이상미디어랩-
 
-In the project directory, you can run:
+2020년 COVID-19 펜데믹과 함께 일어난 주식/코인 시장의 붐.
 
-### `yarn start`
+그중 주식에 관심이 생겼던 나는 본격적으로 주식을 공부하고자 서점을 방문해 위 책을 구매하였다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+본 책에서는 기본적인 `기업 공시 내용`을 해석하는 방법과 일명 `‘세력’`의 신호가 어떤 타이밍에 등장하는지의 흐름과 세력의 패턴을 익히는 방법을 소개해 준다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+주가 부양 흔적과 최적의 매매 타이밍을 알고자 한다면 위 책을 한번 읽어보는것을 추천한다.
 
-### `yarn test`
+이번 프로젝트는 위 책에서 소개하는 세력이 남기는 흔적과 공시가 보내는 뚜렷한 신호를 보다 편리하게 추적하기 위한 단순 편리성 제공에만 목적을 둔다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ps. 세력의 냄새를 맡고 그들의 노고에 빨대를 꽂고자 ‘킁킁이’로 이번 프로젝트를 명명하였다. 😄
+<br/>
 
-### `yarn build`
+---
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 프로젝트 개요
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ - 증권사(HTS or MTS) 시스템내  주가 차트에선 기업 공시 확인이 불편함
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ - 네이버 금융 주가 차트 내에서는 [공시] 타이틀도 함께 볼 수는 있지만 공시 유형의 커스텀에 한계가 있음
 
-### `yarn eject`
+ - 위 한계를 보안하고자 주가 차트와 세력이 남기는 흔적 공시를 함께 나타내어 보다 편리함을 제공한다.
+ 
+<br>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 주가 관련 데이터
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+ - 네이버 금융 시세 스크래핑([https://api.finance.naver.com](https://api.finance.naver.com/)/siseJson.naver/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    [시가, 고가, 저가, 종가, 거래량, 외국인소진율] 수집
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<br>
 
-## Learn More
+## 기업 공시 데이터
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+ - OPEN DART API 사용: [https://opendart.fss.or.kr](https://opendart.fss.or.kr/) 참조
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+ - 본 책에서 소개하는 공시와 본인이 추가한 필요 공시 리스트 :
+
+- 유상증자
+- CB(전환사채), BW(신주인수권부사채권) 발행 결졍
+- 전환가액 조정
+- 최대주주 변경
+- 주식등의 대량 보유상황 보고
+- 타법인 주식 및 출자증권 양수도 계약
+- 주권 관련 사채권 양수도
+- 임원ㆍ주요주주 소유보고
+- 신규시설투자
+
+<br/>
+
+## 사용 방법
+
+1. 프로젝트 root 경로에 .env 파일 생성
+    ```
+    //.evn 파일
+
+    REACT_APP_DART_API_KEY=<OPEN DART에서 발급 받은 인증키>
+    ```
+2. **npm install** 또는 **yarn** 으로 관련 dependencies 설치
+3. **npm run start** 또는 **yarn start**로 시작
+4. **localhost:3000**으로 로컬 환경 접속
