@@ -42,6 +42,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             ${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>` : ''}
                             ${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>` : ''}
                             ${stockData?.cvbdIsDecsn[idx]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_etc}원</b></p>` : ''}
+                            <p>표면 이자율:<b>${stockData?.cvbdIsDecsn[idx]?.bd_intr_ex}%</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;만기 이자율:<b>${stockData?.cvbdIsDecsn[idx]?.bd_intr_sf}%</b></p>
                             <p>전환가액:<b>${stockData?.cvbdIsDecsn[idx]?.cv_prc}원</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;최소전환가액:<b>${stockData?.cvbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원</b></p>
                             <p>전환청구기간: <b>${stockData?.cvbdIsDecsn[idx]?.cvrqpd_bgd} ~ ${stockData?.cvbdIsDecsn[idx]?.cvrqpd_edd}</b></p>
                         </div>
@@ -59,6 +60,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
                             ${stockData?.bwbdIsDecsn[idx]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>` : ''}
                             ${stockData?.bwbdIsDecsn[idx]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>` : ''}
                             ${stockData?.bwbdIsDecsn[idx]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.bwbdIsDecsn[idx]?.fdpp_etc}원</b></p>` : ''}
+                            <p>표면 이자율:<b>${stockData?.bwbdIsDecsn[idx]?.bd_intr_ex}%</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;만기 이자율:<b>${stockData?.bwbdIsDecsn[idx]?.bd_intr_sf}%</b></p>
                             <p>행사가액:<b>${stockData?.bwbdIsDecsn[idx]?.ex_prc}원</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;최소행사가액:<b>${stockData?.bwbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원</b></p>
                             <p>권한행사기간: <b>${stockData?.bwbdIsDecsn[idx]?.expd_bgd} ~ ${stockData?.bwbdIsDecsn[idx]?.expd_edd}</b></p>
                         </div>

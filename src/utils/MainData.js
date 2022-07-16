@@ -69,6 +69,8 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
         fdpp_dtrp: data.fdpp_dtrp, //채무상환자금
         fdpp_ocsa: data.fdpp_ocsa, //타법인 증권 취득자금
         fdpp_etc: data.fdpp_etc, //기타자금
+        bd_intr_ex: data.bd_intr_ex, //표면이자율
+        bd_intr_sf: data.bd_intr_sf, //만기이자율
         cv_prc: data.cv_prc, //전환가액
         act_mktprcfl_cvprc_lwtrsprc: data.act_mktprcfl_cvprc_lwtrsprc, //최소전환가액
         cvrqpd_bgd: data.cvrqpd_bgd, //전환청구기간(시작일)
@@ -96,6 +98,8 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
           fdpp_dtrp: data.fdpp_dtrp, //채무상환자금
           fdpp_ocsa: data.fdpp_ocsa, //타법인 증권 취득자금
           fdpp_etc: data.fdpp_etc, //기타자금
+          bd_intr_ex: data.bd_intr_ex, //표면이자율
+          bd_intr_sf: data.bd_intr_sf, //만기이자율
           ex_prc: data.ex_prc, //행사가액
           act_mktprcfl_cvprc_lwtrsprc: data.act_mktprcfl_cvprc_lwtrsprc, //최소 조정가액
           expd_bgd: data.expd_bgd, //권리행사기간(시작일)
