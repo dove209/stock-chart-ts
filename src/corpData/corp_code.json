@@ -1,6 +1,11 @@
 {
     "list": [
         {
+            "corp_code": "00257149",
+            "corp_name": "지더블유바이텍",
+            "stock_code": "036180"
+        },
+        {
             "corp_code": "00260985",
             "corp_name": "한빛네트",
             "stock_code": "036720"
@@ -7604,11 +7609,6 @@
             "corp_code": "01480780",
             "corp_name": "NH올원리츠",
             "stock_code": "400760"
-        },
-        {
-            "corp_code": "00257149",
-            "corp_name": "지더블유바이텍",
-            "stock_code": "036180"
         },
         {
             "corp_code": "00537832",

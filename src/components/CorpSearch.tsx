@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react'
+import axios from 'axios';
+import { dateFormat } from '../utils/Date';
+
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,7 +11,7 @@ import { ko } from "date-fns/locale";
 import corpCode from '../corpData/corp_code.json';
 import { oneMonthAgo, sixMonthAgo, oneYearAgo, twoYearAgo } from '../utils/Date';
 
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
 import { periodState } from '../recoil/period';
 import { isSearchState } from '../recoil/isSearch';
@@ -46,6 +49,9 @@ const Container = styled.div<IisFold>`
             display: flex;
             align-items: center;
             justify-content: center;
+            &.cbSearch {
+                margin-top: 0px;
+            }
             button {
                 width: 100px;
                 height: 100%;
@@ -274,6 +280,36 @@ const CorpSearch = (): JSX.Element => {
     }
 
 
+    let timer: ReturnType<typeof setInterval>;
+    let cnt: number = 0;
+    let resultArr: string[] = [];
+    const toSearch = () => {
+        const proxyDart = process.env.NODE_ENV === 'development' ? '/dartAPI' : '/proxyDart';
+        const startTime = dateFormat(period?.startDate);
+        const endTime = dateFormat(period?.endDate);
+        timer = setInterval(async () => {
+            if (corpCode?.list[cnt]) {
+                let cdbdData = (await axios.get(`${proxyDart}/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.list[cnt]?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list; //opendart 전환사채
+                if (cdbdData) {
+                    if (cdbdData.length >= 3) {
+                        resultArr.push(`${corpCode.list[cnt].corp_name}(${cdbdData.length})`)
+                    }
+                } else {
+                    console.log('없음...')
+                }
+                cnt++;
+            } else {
+                clearInterval(timer)
+            }
+        }, 200)
+    }
+
+    const stopSearch = () => {
+        clearInterval(timer);
+        console.log(resultArr);
+        alert(resultArr)
+    }
+
     return (
         <Container isFold={isFold}>
             {isFold ?
@@ -334,6 +370,13 @@ const CorpSearch = (): JSX.Element => {
                     <div className='bntWrap'>
                         <button id='searchBtn' onClick={search}>검색</button>
                         <button id='initBtn' onClick={initBntClick}>초기화</button>
+                    </div>
+
+                    {/* CB발생 기업 리스트 조회 */}
+                    <h1 style={{ textAlign: 'center', marginTop: '20px', fontWeight: 'bold' }}>CB발행 기업 조회</h1>
+                    <div className='bntWrap cbSearch'>
+                        <button id='searchBtn' onClick={toSearch}>시작</button>
+                        <button id='initBtn' onClick={stopSearch}>종료</button>
                     </div>
                     <FoldBtn onClick={() => setIsFold(true)}>접기</FoldBtn>
                 </>
