@@ -1,6 +1,6 @@
 [[redirects]]
 from = "/proxyNaver/*"
-to = "https://api.finance.naver.com/siseJson.naver/:splat"  
+to = "https://api.finance.naver.com/:splat"  
 status = 200
 force = true
 
