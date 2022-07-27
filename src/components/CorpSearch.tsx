@@ -11,7 +11,7 @@ import { ko } from "date-fns/locale";
 import corpCode from '../corpData/corp_code.json';
 import { oneMonthAgo, sixMonthAgo, oneYearAgo, twoYearAgo } from '../utils/Date';
 
-import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { corpCodeState } from '../recoil/corpCode';
 import { periodState } from '../recoil/period';
 import { isSearchState } from '../recoil/isSearch';
@@ -49,9 +49,6 @@ const Container = styled.div<IisFold>`
             display: flex;
             align-items: center;
             justify-content: center;
-            &.cbSearch {
-                margin-top: 0px;
-            }
             button {
                 width: 100px;
                 height: 100%;
@@ -67,6 +64,19 @@ const Container = styled.div<IisFold>`
                     color: #fff;
                 }
                 &#initBtn {
+                    &:hover {
+                        background-color: #aaa;
+                        color: #fff;
+                    }
+                }
+                &#cbStartBtn {
+                    font-size: 14px;
+                    background-color: #ff1d0a;
+                    border: transparent;
+                    color: #fff;
+                }
+                &#cbStopBtn {
+                    font-size: 14px;
                     &:hover {
                         background-color: #aaa;
                         color: #fff;
@@ -370,14 +380,11 @@ const CorpSearch = (): JSX.Element => {
                     <div className='bntWrap'>
                         <button id='searchBtn' onClick={search}>검색</button>
                         <button id='initBtn' onClick={initBntClick}>초기화</button>
+                        {/* CB발생 기업 리스트 조회 */}
+                        <button id='cbStartBtn' onClick={toSearch}>CB기업조회</button>
+                        <button id='cbStopBtn' onClick={stopSearch}>CB조회종료</button>
                     </div>
 
-                    {/* CB발생 기업 리스트 조회 */}
-                    <h1 style={{ textAlign: 'center', marginTop: '20px', fontWeight: 'bold' }}>CB발행 기업 조회</h1>
-                    <div className='bntWrap cbSearch'>
-                        <button id='searchBtn' onClick={toSearch}>시작</button>
-                        <button id='initBtn' onClick={stopSearch}>종료</button>
-                    </div>
                     <FoldBtn onClick={() => setIsFold(true)}>접기</FoldBtn>
                 </>
             }
