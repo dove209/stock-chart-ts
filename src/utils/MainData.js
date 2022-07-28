@@ -52,7 +52,7 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
   }
 
   //전환사채(CB) 발행 결정 공시
-  let cvbdIsDecsn = new Array(categoryData.length).fill(null);
+  let cvbdIsDecsn = new Array(categoryData.length).fill([]);
   if (!!cdbdData) {
     cdbdData.forEach((data) => {
       let bddd = data.bddd.replace(/(\s*)/g, "");
@@ -76,7 +76,7 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
         cvrqpd_bgd: data.cvrqpd_bgd, //전환청구기간(시작일)
         cvrqpd_edd: data.cvrqpd_edd, //전환청구기간(종료일)
       };
-      cvbdIsDecsn[findIdx] = cvObj;
+      cvbdIsDecsn[findIdx] = [...cvbdIsDecsn[findIdx], cvObj];
     });
   }
 

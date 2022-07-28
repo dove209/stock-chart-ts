@@ -15,13 +15,13 @@ export interface INoticeMenu {
 export const noticeMenuState = atom<INoticeMenu>({
     key: 'NoticeType',
     default: {
-        piic: true,
+        piic: false,
         cb: true,
-        bw: true,
-        majorStock: true,
-        otcprStkInvscr: true,
-        stkrtbd: true,
-        elestock: true,
-        newFacill: true,
+        bw: false,
+        majorStock: false,
+        otcprStkInvscr: false,
+        stkrtbd: false,
+        elestock: false,
+        newFacill: false,
     }
 })

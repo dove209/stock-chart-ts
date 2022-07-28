@@ -57,7 +57,7 @@ const StockChart = () => {
   }, [isSearching])
 
   useEffect(() => {
-    // console.log(stockData)
+    console.log(stockData)
   }, [stockData])
 
   if (isSearching) return <Spinner />

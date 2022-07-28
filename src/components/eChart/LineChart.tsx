@@ -31,20 +31,30 @@ const LineChart = ({ stockData }: LineChartProps) => {
                     let dateHeader = `<div class='header'>${params[0].name}</div>`
                     let tooltipArr = [];
                     // CB 발행 공시
-                    if (stockData?.cvbdIsDecsn[idx]) {
+                    if (stockData?.cvbdIsDecsn[idx].length === 1) {
                         tooltipArr.push(`
                         <div class='notice'>
-                            <p class='title'>CB발행 (${stockData?.cvbdIsDecsn[idx]?.bd_tm}회차) [${stockData?.cvbdIsDecsn[idx]?.bd_knd}] </p>
-                            <p>사채 총액:<b>${stockData?.cvbdIsDecsn[idx]?.bd_fta}원</b></p>
-                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_fclt !== '-' ? `<p>시설자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_fclt}원</b></p>` : ''}
-                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_bsninh !== '-' ? `<p>영업양수자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_bsninh}원</b></p>` : ''}
-                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_op !== '-' ? `<p>운영자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_op}원</b></p>` : ''}
-                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_dtrp}원</b></p>` : ''}
-                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_ocsa}원</b></p>` : ''}
-                            ${stockData?.cvbdIsDecsn[idx]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.cvbdIsDecsn[idx]?.fdpp_etc}원</b></p>` : ''}
-                            <p>표면 이자율:<b>${stockData?.cvbdIsDecsn[idx]?.bd_intr_ex}%</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;만기 이자율:<b>${stockData?.cvbdIsDecsn[idx]?.bd_intr_sf}%</b></p>
-                            <p>전환가액:<b>${stockData?.cvbdIsDecsn[idx]?.cv_prc}원</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;최소전환가액:<b>${stockData?.cvbdIsDecsn[idx]?.act_mktprcfl_cvprc_lwtrsprc}원</b></p>
-                            <p>전환청구기간: <b>${stockData?.cvbdIsDecsn[idx]?.cvrqpd_bgd} ~ ${stockData?.cvbdIsDecsn[idx]?.cvrqpd_edd}</b></p>
+                            <p class='title'>CB발행 (${stockData?.cvbdIsDecsn[idx][0]?.bd_tm}회차) [${stockData?.cvbdIsDecsn[idx][0]?.bd_knd}] </p>
+                            <p>사채 총액:<b>${stockData?.cvbdIsDecsn[idx][0]?.bd_fta}원</b></p>
+                            ${stockData?.cvbdIsDecsn[idx][0]?.fdpp_fclt !== '-' ? `<p>시설자금:<b>${stockData?.cvbdIsDecsn[idx][0]?.fdpp_fclt}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx][0]?.fdpp_bsninh !== '-' ? `<p>영업양수자금:<b>${stockData?.cvbdIsDecsn[idx][0]?.fdpp_bsninh}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx][0]?.fdpp_op !== '-' ? `<p>운영자금:<b>${stockData?.cvbdIsDecsn[idx][0]?.fdpp_op}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx][0]?.fdpp_dtrp !== '-' ? `<p>채무상황자금:<b>${stockData?.cvbdIsDecsn[idx][0]?.fdpp_dtrp}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx][0]?.fdpp_ocsa !== '-' ? `<p>타법인 증권 취득 자금:<b>${stockData?.cvbdIsDecsn[idx][0]?.fdpp_ocsa}원</b></p>` : ''}
+                            ${stockData?.cvbdIsDecsn[idx][0]?.fdpp_etc !== '-' ? `<p>기타자금:<b>${stockData?.cvbdIsDecsn[idx][0]?.fdpp_etc}원</b></p>` : ''}
+                            <p>표면 이자율:<b>${stockData?.cvbdIsDecsn[idx][0]?.bd_intr_ex}%</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;만기 이자율:<b>${stockData?.cvbdIsDecsn[idx][0]?.bd_intr_sf}%</b></p>
+                            <p>전환가액:<b>${stockData?.cvbdIsDecsn[idx][0]?.cv_prc}원</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;최소전환가액:<b>${stockData?.cvbdIsDecsn[idx][0]?.act_mktprcfl_cvprc_lwtrsprc}원</b></p>
+                            <p>전환청구기간: <b>${stockData?.cvbdIsDecsn[idx][0]?.cvrqpd_bgd} ~ ${stockData?.cvbdIsDecsn[idx][0]?.cvrqpd_edd}</b></p>
+                        </div>
+                        `);
+                    } else if (stockData?.cvbdIsDecsn[idx].length > 1) {
+                        let cdCount: string = '';
+                        stockData?.cvbdIsDecsn[idx].forEach((ele: any) => {
+                            cdCount += `${ele.bd_tm}회차 `
+                        });
+                        tooltipArr.push(`
+                        <div class='notice'>
+                            <p class='title'>CB발행 (${cdCount}) </p>
                         </div>
                         `);
                     }
@@ -228,8 +238,10 @@ const LineChart = ({ stockData }: LineChartProps) => {
                         fontWeight: 'bold',
                         formatter: function (d: any) {
                             let labelArr = [];
-                            if (stockData?.cvbdIsDecsn[d.dataIndex]) {
-                                labelArr.push(`CB발행\n(${stockData?.cvbdIsDecsn[d.dataIndex]?.bd_tm}회차)`);
+                            if (stockData?.cvbdIsDecsn[d.dataIndex].length === 1) {
+                                labelArr.push(`CB발행\n(${stockData?.cvbdIsDecsn[d.dataIndex][0]?.bd_tm}회차)`);
+                            } else if (stockData?.cvbdIsDecsn[d.dataIndex].length > 1) {
+                                labelArr.push(`CB발행\n(${stockData?.cvbdIsDecsn[d.dataIndex].length}개 동시)`);
                             }
                             if (stockData?.bwbdIsDecsn[d.dataIndex]) {
                                 labelArr.push(`BW발행\n(${stockData?.bwbdIsDecsn[d.dataIndex]?.bd_tm}회차)`);
@@ -305,8 +317,8 @@ const LineChart = ({ stockData }: LineChartProps) => {
 
     const onClick = (e: any) => {
         // 전환사채 발행 결정
-        if (stockData.cvbdIsDecsn[e.dataIndex]) {
-            let rceptNo = stockData?.cvbdIsDecsn[e.dataIndex]?.rcept_no;
+        if (stockData.cvbdIsDecsn[e.dataIndex].length === 1) {
+            let rceptNo = stockData?.cvbdIsDecsn[e.dataIndex][0]?.rcept_no;
             window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, 'CB', 'width=1300, height=1000, scrollbars=yes')
         }
         // 신주인수권부사채 발행 결정
@@ -362,6 +374,7 @@ const LineChart = ({ stockData }: LineChartProps) => {
             let rceptNo = stockData?.newFacill[e.dataIndex]?.rcept_no;
             window.open(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rceptNo}`, '신규시설투자', 'width=1300, height=1000, scrollbars=yes')
         }
+
     }
 
     const onEvents = {

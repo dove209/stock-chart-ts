@@ -297,7 +297,7 @@ const CorpSearch = (): JSX.Element => {
         const proxyDart = process.env.NODE_ENV === 'development' ? '/dartAPI' : '/proxyDart';
         const startTime = dateFormat(period?.startDate);
         const endTime = dateFormat(period?.endDate);
-        timer = setInterval(async () => {           
+        timer = setInterval(async () => {
             if (corpCode?.list[cnt]) {
                 let cdbdData = (await axios.get(`${proxyDart}/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.list[cnt]?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list; //opendart 전환사채
                 if (cdbdData) {
@@ -316,7 +316,7 @@ const CorpSearch = (): JSX.Element => {
 
     const stopSearch = () => {
         clearInterval(timer);
-        console.log(resultArr);
+        // console.log(resultArr);
         alert(resultArr)
     }
 
