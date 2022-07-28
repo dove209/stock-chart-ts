@@ -27,7 +27,7 @@ export const calculateMA = (dayCount, data) => {
 
 
 // 차트, 공시 정보가 포함된 메인 데이터
-export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData, eleStockData, newFacillData) => {
+export const mainData = (rawData, cvbdData, bwbdData, piicData, adjustCbData, majorStockData, ocsisInhData, ocsisTrfData, stkrtbdInhData, stkrtbdTrfData, eleStockData, newFacillData) => {
   let categoryData = [];
   let values = [];
   let volumes = [];
@@ -53,8 +53,8 @@ export const mainData = (rawData, cdbdData, bwbdData, piicData, adjustCbData, ma
 
   //전환사채(CB) 발행 결정 공시
   let cvbdIsDecsn = new Array(categoryData.length).fill([]);
-  if (!!cdbdData) {
-    cdbdData.forEach((data) => {
+  if (!!cvbdData) {
+    cvbdData.forEach((data) => {
       let bddd = data.bddd.replace(/(\s*)/g, "");
       let dateFormat = `${bddd.substr(0, 4)}-${bddd.substr(5, 2)}-${bddd.substr(8,2)}`;
       let findIdx = categoryData.indexOf(dateFormat);

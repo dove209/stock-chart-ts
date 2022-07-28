@@ -1,6 +1,26 @@
 {
     "list": [
         {
+            "corp_code": "00257149",
+            "corp_name": "지더블유바이텍",
+            "stock_code": "036180"
+        },
+        {
+            "corp_code": "00363510",
+            "corp_name": "소니드",
+            "stock_code": "060230"
+        },
+        {
+            "corp_code": "00814786",
+            "corp_name": "스카이이앤엠",
+            "stock_code": "131100"
+        },
+        {
+            "corp_code": "00458562",
+            "corp_name": "에이티세미콘",
+            "stock_code": "089530"
+        },
+        {
             "corp_code": "00260985",
             "corp_name": "한빛네트",
             "stock_code": "036720"
@@ -1239,11 +1259,6 @@
             "corp_code": "00164292",
             "corp_name": "동원데어리푸드",
             "stock_code": "003900"
-        },
-        {
-            "corp_code": "00257149",
-            "corp_name": "지더블유바이텍",
-            "stock_code": "036180"
         },
         {
             "corp_code": "00371519",
@@ -6654,11 +6669,6 @@
             "corp_code": "01015726",
             "corp_name": "미래테크놀로지",
             "stock_code": "213090"
-        },
-        {
-            "corp_code": "00814786",
-            "corp_name": "스카이이앤엠",
-            "stock_code": "131100"
         },
         {
             "corp_code": "00678096",
@@ -14011,11 +14021,6 @@
             "stock_code": "053590"
         },
         {
-            "corp_code": "00363510",
-            "corp_name": "소니드",
-            "stock_code": "060230"
-        },
-        {
             "corp_code": "00364847",
             "corp_name": "이글루",
             "stock_code": "067920"
@@ -14329,11 +14334,6 @@
             "corp_code": "00128546",
             "corp_name": "삼천당제약",
             "stock_code": "000250"
-        },
-        {
-            "corp_code": "00458562",
-            "corp_name": "에이티세미콘",
-            "stock_code": "089530"
         },
         {
             "corp_code": "01072518",

@@ -15,7 +15,7 @@ export interface INoticeMenu {
 export const noticeMenuState = atom<INoticeMenu>({
     key: 'NoticeType',
     default: {
-        piic: false,
+        piic: true,
         cb: true,
         bw: false,
         majorStock: false,

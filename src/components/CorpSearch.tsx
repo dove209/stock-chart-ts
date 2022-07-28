@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react'
-import axios from 'axios';
 import { dateFormat } from '../utils/Date';
 
 import styled from 'styled-components';
@@ -21,6 +20,7 @@ import { isFoldState } from '../recoil/isFold';
 
 import AutoComplete from './AutoComplete';
 import Keywords from './Keywords';
+import CBList from './CBLisrt';
 
 interface IisFold {
     isFold: boolean
@@ -74,13 +74,6 @@ const Container = styled.div<IisFold>`
                     background-color: #ff1d0a;
                     border: transparent;
                     color: #fff;
-                }
-                &#cbStopBtn {
-                    font-size: 14px;
-                    &:hover {
-                        background-color: #aaa;
-                        color: #fff;
-                    }
                 }
             }
             button + button {
@@ -188,11 +181,12 @@ const CorpSearch = (): JSX.Element => {
     const [corpName, setCorpName] = useState<string>('');                // 종목명 검색
     const setCorpCode = useSetRecoilState(corpCodeState);                // 검색된 종목의 코드 객체
     const [period, setPeriod] = useRecoilState(periodState);             // 시작일 ~ 종료일
-    const [periodMenu, setPeriodMenu] = useState<string>('oneYear');     // 기간 메뉴 1년전(기본)
+    const [periodMenu, setPeriodMenu] = useState<string>('sixMonth');     // 기간 메뉴 1년전(기본)
     const [isSearching, setIsSearching] = useRecoilState(isSearchState); // 검색중
     const [noticeMenu, setNoticeMenu] = useRecoilState(noticeMenuState); // 공시 유형
     const [keywords, setKeywords] = useRecoilState(keywordsState);       // 최근 검색 기록
     const [isFold, setIsFold] = useRecoilState(isFoldState);             // 검색 컨테이너 접기 유무
+    const [isCBSearch, setIsCBSearch] = useState(false);                 // CB발행 기업 검색 유무
 
     // 기간 메뉴 선택
     const periodMenuClick = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -272,123 +266,97 @@ const CorpSearch = (): JSX.Element => {
         setCorpName('')
         setPeriod({
             ...period,
-            startDate: oneYearAgo(new Date()),
+            startDate: sixMonthAgo(new Date()),
             endDate: new Date()
         })
         setNoticeMenu({
             ...noticeMenu,
             piic: true,
             cb: true,
-            bw: true,
-            majorStock: true,
-            otcprStkInvscr: true,
-            stkrtbd: true,
-            elestock: true,
-            newFacill: true,
+            bw: false,
+            majorStock: false,
+            otcprStkInvscr: false,
+            stkrtbd: false,
+            elestock: false,
+            newFacill: false,
         })
-        setPeriodMenu('oneYear');
-    }
-
-
-    let timer: ReturnType<typeof setInterval>;
-    let cnt: number = 0;
-    let resultArr: string[] = [];
-    const toSearch = () => {
-        const proxyDart = process.env.NODE_ENV === 'development' ? '/dartAPI' : '/proxyDart';
-        const startTime = dateFormat(period?.startDate);
-        const endTime = dateFormat(period?.endDate);
-        timer = setInterval(async () => {
-            if (corpCode?.list[cnt]) {
-                let cdbdData = (await axios.get(`${proxyDart}/cvbdIsDecsn.json?crtfc_key=${process.env.REACT_APP_DART_API_KEY}&corp_code=${corpCode?.list[cnt]?.corp_code}&bgn_de=${startTime}&end_de=${endTime}`)).data.list; //opendart 전환사채
-                if (cdbdData) {
-                    if (cdbdData.length >= 3) {
-                        resultArr.push(`${corpCode.list[cnt].corp_name}(${cdbdData.length})`);
-                    }
-                } else {
-                    console.log('없음....');
-                }
-            } else {
-                clearInterval(timer)
-            }
-            cnt += 1;
-        }, 400)
-    }
-
-    const stopSearch = () => {
-        clearInterval(timer);
-        // console.log(resultArr);
-        alert(resultArr)
+        setPeriodMenu('sixMonth');
     }
 
     return (
-        <Container isFold={isFold}>
-            {isFold ?
-                <UnFoldBtn onClick={() => setIsFold(false)}>검색</UnFoldBtn>
-                :
-                <>
-                    <div className='corpName'>
-                        <h4>회사명</h4>
-                        <AutoComplete value={corpName} setCorpName={setCorpName} />
-                    </div>
-                    <div className='period'>
-                        <h4>기간</h4>
-                        <CustomDatePicker
-                            locale={ko}
-                            dateFormat={"yyyy-MM-dd"}
-                            selected={period.startDate}
-                            onChange={(date) => setPeriod({ ...period, startDate: date })}
-                        />
-                        <h3>~</h3>
-                        <CustomDatePicker
-                            locale={ko}
-                            dateFormat={"yyyy-MM-dd"}
-                            selected={period.endDate}
-                            onChange={(date) => setPeriod({ ...period, endDate: date })}
-                            maxDate={new Date()}
-                        />
-                        <ul>
-                            <li className={periodMenu === 'oneMonth' ? 'active' : undefined} onClick={periodMenuClick}>1개월</li>
-                            <li className={periodMenu === 'sixMonth' ? 'active' : undefined} onClick={periodMenuClick}>6개월</li>
-                            <li className={periodMenu === 'oneYear' ? 'active' : undefined} onClick={periodMenuClick}>1년</li>
-                            <li className={periodMenu === 'twoYear' ? 'active' : undefined} onClick={periodMenuClick}>2년</li>
-                        </ul>
-                    </div>
-                    <div className='dartMenu'>
-                        <h4>공시유형</h4>
-                        <ul>
-                            <li className={noticeMenu.piic ? 'active' : undefined} onClick={noticeMenuClick}>유증</li>
-                            <li className={noticeMenu.cb ? 'active' : undefined} onClick={noticeMenuClick}>CB</li>
-                            <li className={noticeMenu.bw ? 'active' : undefined} onClick={noticeMenuClick}>BW</li>
-                            <li className={noticeMenu.majorStock ? 'active' : undefined} onClick={noticeMenuClick}>대량보유</li>
-                            <li className={noticeMenu.stkrtbd ? 'active' : undefined} onClick={noticeMenuClick}>사채권 양수도</li>
-                            <li className={noticeMenu.otcprStkInvscr ? 'active' : undefined} onClick={noticeMenuClick}>타법인 주식 양수도</li>
-                        </ul>
-                    </div>
-                    <div className='dartMenu'>
-                        <h4></h4>
-                        <ul>
-                            <li className={noticeMenu.elestock ? 'active' : undefined} onClick={noticeMenuClick}>임원ㆍ주요주주 소유</li>
-                            <li className={noticeMenu.newFacill ? 'active' : undefined} onClick={noticeMenuClick}>신규시설투자</li>
-                        </ul>
-                    </div>
+        <>
+            <Container isFold={isFold}>
+                {isFold ?
+                    <UnFoldBtn onClick={() => setIsFold(false)}>검색</UnFoldBtn>
+                    :
+                    <>
+                        <div className='corpName'>
+                            <h4>회사명</h4>
+                            <AutoComplete value={corpName} setCorpName={setCorpName} />
+                        </div>
+                        <div className='period'>
+                            <h4>기간</h4>
+                            <CustomDatePicker
+                                locale={ko}
+                                dateFormat={"yyyy-MM-dd"}
+                                selected={period.startDate}
+                                onChange={(date) => setPeriod({ ...period, startDate: date })}
+                            />
+                            <h3>~</h3>
+                            <CustomDatePicker
+                                locale={ko}
+                                dateFormat={"yyyy-MM-dd"}
+                                selected={period.endDate}
+                                onChange={(date) => setPeriod({ ...period, endDate: date })}
+                                maxDate={new Date()}
+                            />
+                            <ul>
+                                <li className={periodMenu === 'oneMonth' ? 'active' : undefined} onClick={periodMenuClick}>1개월</li>
+                                <li className={periodMenu === 'sixMonth' ? 'active' : undefined} onClick={periodMenuClick}>6개월</li>
+                                <li className={periodMenu === 'oneYear' ? 'active' : undefined} onClick={periodMenuClick}>1년</li>
+                                <li className={periodMenu === 'twoYear' ? 'active' : undefined} onClick={periodMenuClick}>2년</li>
+                            </ul>
+                        </div>
+                        <div className='dartMenu'>
+                            <h4>공시유형</h4>
+                            <ul>
+                                <li className={noticeMenu.piic ? 'active' : undefined} onClick={noticeMenuClick}>유증</li>
+                                <li className={noticeMenu.cb ? 'active' : undefined} onClick={noticeMenuClick}>CB</li>
+                                <li className={noticeMenu.bw ? 'active' : undefined} onClick={noticeMenuClick}>BW</li>
+                                <li className={noticeMenu.majorStock ? 'active' : undefined} onClick={noticeMenuClick}>대량보유</li>
+                                <li className={noticeMenu.stkrtbd ? 'active' : undefined} onClick={noticeMenuClick}>사채권 양수도</li>
+                                <li className={noticeMenu.otcprStkInvscr ? 'active' : undefined} onClick={noticeMenuClick}>타법인 주식 양수도</li>
+                            </ul>
+                        </div>
+                        <div className='dartMenu'>
+                            <h4></h4>
+                            <ul>
+                                <li className={noticeMenu.elestock ? 'active' : undefined} onClick={noticeMenuClick}>임원ㆍ주요주주 소유</li>
+                                <li className={noticeMenu.newFacill ? 'active' : undefined} onClick={noticeMenuClick}>신규시설투자</li>
+                            </ul>
+                        </div>
 
-                    {/* 최근 검색 리스트 */}
-                    {keywords.length !== 0 &&
-                        <Keywords setCorpName={setCorpName} />
-                    }
+                        {/* 최근 검색 리스트 */}
+                        {keywords.length !== 0 &&
+                            <Keywords setCorpName={setCorpName} />
+                        }
 
-                    <div className='bntWrap'>
-                        <button id='searchBtn' onClick={search}>검색</button>
-                        <button id='initBtn' onClick={initBntClick}>초기화</button>
-                        {/* CB발생 기업 리스트 조회 */}
-                        <button id='cbStartBtn' onClick={toSearch}>CB기업조회</button>
-                        <button id='cbStopBtn' onClick={stopSearch}>CB조회종료</button>
-                    </div>
+                        <div className='bntWrap'>
+                            <button id='searchBtn' onClick={search}>검색</button>
+                            <button id='initBtn' onClick={initBntClick}>초기화</button>
+                            <button id='cbStartBtn' onClick={() => setIsCBSearch(true)}>CB기업조회</button>
+                        </div>
 
-                    <FoldBtn onClick={() => setIsFold(true)}>접기</FoldBtn>
-                </>
+                        <FoldBtn onClick={() => setIsFold(true)}>접기</FoldBtn>
+                    </>
+                }
+            </Container>
+
+            {/* CB발생 기업 리스트 모달창 */}
+            {isCBSearch &&
+                <CBList close={setIsCBSearch} startTime={dateFormat(period?.startDate)} endTime={dateFormat(period?.endDate)} />
             }
-        </Container>
+        </>
     )
 }
 
