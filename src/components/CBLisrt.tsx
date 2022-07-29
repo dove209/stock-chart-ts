@@ -2,11 +2,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import corpCode from '../corpData/corp_code.json';
 
+import corpCode from '../corpData/corp_code.json';
 import styled from 'styled-components';
 import { IoMdClose } from 'react-icons/io';
-
+import DownloadJSON2CSV from '../utils/DownloadJSON2CSV';
 
 const Container = styled.div`
     width: 100vw;
@@ -50,12 +50,17 @@ const CBCorpSearch = styled.div`
                 .info {
                     font-weight: bold;
                     font-size: 1.1rem;
-                    margin-bottom: 20px;
                     display: flex;
                     justify-content: space-between;
                 }
+                h1 {
+                    font-size:1.1rem;
+                    font-weight:bold;
+                    text-align: center;
+                }
                 .funds {
                     display: flex;
+                    margin-top: 10px;
                     & > li {
                         flex:1;
                         font-size: 0.9rem;
@@ -68,29 +73,37 @@ const CBCorpSearch = styled.div`
             }
         }
     }
-    button {
-        margin: 10px auto 0 auto;
-        width: 100px;
-        height: 32px;
-        background-color: #fff;
-        border: 1px solid #e1e1e1;
-        cursor: pointer;
-        border-radius: 5px;
-        font-weight: bold;
-        font-size: 1rem;
-        &.restart {
-            background-color: #00b222;
-            border: transparent;
-            color: #fff;
-        }
-        &.stop {
-            &:hover {
-                background-color: #aaa;
-                color: #fff;    
+    .btnWrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        button {
+            width: 100px;
+            height: 32px;
+            background-color: #fff;
+            border: 1px solid #e1e1e1;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            &.restart {
+                background-color: #00b222;
+                border: transparent;
+                color: #fff;
+            }
+            &.stop {
+                &:hover {
+                    background-color: #aaa;
+                    color: #fff;    
+                }
             }
         }
- 
+        button + button {
+            margin-left: 10px;
+        }
     }
+
 `
 function useInterval(callback: any, delay: number | null) {
     const savedCallback = useRef<any>();
@@ -111,6 +124,7 @@ function useInterval(callback: any, delay: number | null) {
         }
     }, [delay]);
 }
+
 
 
 type CBListProps = {
@@ -169,9 +183,13 @@ const CBLisrt = ({ close, startTime, endTime }: CBListProps) => {
     }, isRunning ? 400 : null)
 
 
-    useEffect(() => {
-        console.log(corpList)
-    }, [corpList])
+    const download = () => {
+        if (isRunning) {
+            alert('검색을 정지 해주세요!')
+        } else {
+            DownloadJSON2CSV(corpList)
+        }
+    }
 
     return (
         <Container>
@@ -194,29 +212,30 @@ const CBLisrt = ({ close, startTime, endTime }: CBListProps) => {
                                             <p>{corp.name} ({corp.count}건)</p>
                                             <p className='totalFunds'>총 자금 : {corp.totalFunds.toLocaleString()}원</p>
                                         </div>
+                                        <h1>자금 종류</h1>
                                         <ul className='funds'>
                                             <li>
-                                                운영자금 <br />
+                                                운영<br />
                                                 {corp.opFunds.toLocaleString()}원
                                             </li>
                                             <li>
-                                                영업양수자금 <br />
-                                                {corp.bsninhFunds.toLocaleString()}원
-                                            </li>
-                                            <li>
-                                                채무상환자금 <br />
-                                                {corp.dtrpFunds.toLocaleString()}원
-                                            </li>
-                                            <li>
-                                                타법인 취득자금 <br />
+                                                타법인 증권 취득<br />
                                                 {corp.ocsaFunds.toLocaleString()}원
                                             </li>
                                             <li>
-                                                시설자금 <br />
+                                                채무상환 <br />
+                                                {corp.dtrpFunds.toLocaleString()}원
+                                            </li>
+                                            <li>
+                                                영업양수 <br />
+                                                {corp.bsninhFunds.toLocaleString()}원
+                                            </li>
+                                            <li>
+                                                시설 <br />
                                                 {corp.fcltFunds.toLocaleString()}원
                                             </li>
                                             <li>
-                                                기타자금 <br />
+                                                기타 <br />
                                                 {corp.etcFunds.toLocaleString()}원
                                             </li>
                                         </ul>
@@ -227,11 +246,15 @@ const CBLisrt = ({ close, startTime, endTime }: CBListProps) => {
                     }
                 </div>
 
-                {isRunning ?
-                    <button className='stop' onClick={() => setIsRunning(false)}>일시정지</button>
-                    :
-                    <button className='restart' onClick={() => setIsRunning(true)}>재시작</button>
-                }
+                <div className='btnWrap'>
+                    {isRunning ?
+                        <button className='stop' onClick={() => setIsRunning(false)}>일시정지</button>
+                        :
+                        <button className='restart' onClick={() => setIsRunning(true)}>재시작</button>
+                    }
+                    <button className='stop' onClick={download}>다운로드</button>
+                </div>
+
             </CBCorpSearch>
         </Container>
     )
