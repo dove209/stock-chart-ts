@@ -29,7 +29,8 @@ const StockChart = () => {
     const getNaverStockData = async () => {
       if (isSearching) {
         try {
-          const proxyNaver = process.env.NODE_ENV === 'development' ? '/naverAPI' : '/proxyNaver';
+          // 개발 버전에는 http-proxy-middleware사용, 배포 버전에는 netlify 자체 Proxy 서버 사용
+          const proxyNaver = process.env.NODE_ENV === 'development' ? '/naverAPI' : '/proxyNaver'; 
           const proxyDart = process.env.NODE_ENV === 'development' ? '/dartAPI' : '/proxyDart';
           const startTime = dateFormat(period?.startDate);
           const endTime = dateFormat(period?.endDate);
